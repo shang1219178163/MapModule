@@ -1,12 +1,6 @@
 # Xcode
-#
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
-
-## Build generated
-build/
-DerivedData/
-
-## Various settings
+.DS_Store
+*/build/*
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -15,12 +9,15 @@ DerivedData/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-xcuserdata/
-
-## Other
+xcuserdata
+profile
 *.moved-aside
+DerivedData
+.idea/
+*.hmap
 *.xccheckout
-*.xcscmblueprint
+*.xcworkspace
+!default.xcworkspace
 
 ## Obj-C/Swift specific
 *.hmap
@@ -33,6 +30,7 @@ Pods
 !Podfile
 !Podfile.lock
 
+*.zip
 *.framework
 
 # Carthage
