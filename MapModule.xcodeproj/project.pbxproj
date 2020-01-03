@@ -15,7 +15,7 @@
 		14F41194238F60150027A6CA /* LocationTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F41140238F60140027A6CA /* LocationTracker.m */; };
 		14F41195238F60150027A6CA /* LocationShareModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F41141238F60140027A6CA /* LocationShareModel.m */; };
 		14F41196238F60150027A6CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14F41142238F60140027A6CA /* Assets.xcassets */; };
-		14F411BD238F60150027A6CA /* WHKMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F4118F238F60150027A6CA /* WHKMapViewController.m */; };
+		14F411BD238F60150027A6CA /* NNMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F4118F238F60150027A6CA /* NNMapViewController.m */; };
 		14F411BE238F60150027A6CA /* AppGlobleConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F41190238F60150027A6CA /* AppGlobleConfig.m */; };
 		14F4121F238F62450027A6CA /* Utilities_DM.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F411FC238F62430027A6CA /* Utilities_DM.m */; };
 		14F41220238F62450027A6CA /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F411FE238F62430027A6CA /* Utilities.m */; };
@@ -34,21 +34,21 @@
 		14F4122F238F62450027A6CA /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F4121B238F62450027A6CA /* UncaughtExceptionHandler.m */; };
 		14F41253238F66200027A6CA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14F41252238F66200027A6CA /* LaunchScreen.storyboard */; };
 		14F412A1238F77650027A6CA /* PKMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F4129F238F77650027A6CA /* PKMainController.m */; };
-		14F412E9238F7A650027A6CA /* BNPOIAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412A4238F7A630027A6CA /* BNPOIAnnotation.m */; };
-		14F412EA238F7A650027A6CA /* BNMap.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14F412A6238F7A630027A6CA /* BNMap.xcassets */; };
+		14F412E9238F7A650027A6CA /* NNPOIAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412A4238F7A630027A6CA /* NNPOIAnnotation.m */; };
+		14F412EA238F7A650027A6CA /* Map.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14F412A6238F7A630027A6CA /* Map.xcassets */; };
 		14F412EB238F7A650027A6CA /* UIPOIAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412A7238F7A630027A6CA /* UIPOIAnnotationView.m */; };
 		14F412F6238F7A650027A6CA /* MAAnnotationView+Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412BF238F7A630027A6CA /* MAAnnotationView+Map.m */; };
-		14F412F7238F7A650027A6CA /* BNMapOpenHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412C0238F7A630027A6CA /* BNMapOpenHelper.m */; };
-		14F412F8238F7A650027A6CA /* BNDriverRouteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412C4238F7A630027A6CA /* BNDriverRouteView.m */; };
-		14F412F9238F7A650027A6CA /* BNDriverRouteTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412C6238F7A630027A6CA /* BNDriverRouteTipView.m */; };
+		14F412F7238F7A650027A6CA /* NNMapOpenHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412C0238F7A630027A6CA /* NNMapOpenHelper.m */; };
+		14F412F8238F7A650027A6CA /* NNDriverRouteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412C4238F7A630027A6CA /* NNDriverRouteView.m */; };
+		14F412F9238F7A650027A6CA /* NNDriverRouteTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412C6238F7A630027A6CA /* NNDriverRouteTipView.m */; };
 		14F412FA238F7A650027A6CA /* GuGong.tracking in Resources */ = {isa = PBXBuildFile; fileRef = 14F412C8238F7A640027A6CA /* GuGong.tracking */; };
 		14F412FB238F7A650027A6CA /* Tracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412C9238F7A640027A6CA /* Tracking.m */; };
 		14F412FC238F7A650027A6CA /* map_ball_yellow@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 14F412CA238F7A640027A6CA /* map_ball_yellow@3x.png */; };
 		14F412FD238F7A650027A6CA /* TrackingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412CB238F7A640027A6CA /* TrackingViewController.m */; };
 		14F412FE238F7A650027A6CA /* map_ball_yellow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 14F412CC238F7A640027A6CA /* map_ball_yellow@2x.png */; };
-		14F412FF238F7A650027A6CA /* BNMapContainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412CF238F7A640027A6CA /* BNMapContainView.m */; };
-		14F41300238F7A650027A6CA /* BNDriverNaviManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412D0238F7A640027A6CA /* BNDriverNaviManager.m */; };
-		14F41301238F7A650027A6CA /* BNDriverRouteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412D2238F7A640027A6CA /* BNDriverRouteController.m */; };
+		14F412FF238F7A650027A6CA /* NNMapContainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412CF238F7A640027A6CA /* NNMapContainView.m */; };
+		14F41300238F7A650027A6CA /* NNDriverNaviManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412D0238F7A640027A6CA /* NNDriverNaviManager.m */; };
+		14F41301238F7A650027A6CA /* NNDriverRouteController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412D2238F7A640027A6CA /* NNDriverRouteController.m */; };
 		14F41302238F7A650027A6CA /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412D6238F7A640027A6CA /* Util.m */; };
 		14F41303238F7A650027A6CA /* TrackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412D9238F7A640027A6CA /* TrackViewController.m */; };
 		14F41304238F7A650027A6CA /* map_trackingPoints_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 14F412DA238F7A640027A6CA /* map_trackingPoints_blue@2x.png */; };
@@ -56,20 +56,20 @@
 		14F41306238F7A650027A6CA /* map_trackingPoints_blue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 14F412DC238F7A640027A6CA /* map_trackingPoints_blue@3x.png */; };
 		14F41307238F7A650027A6CA /* CACoordLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412DD238F7A640027A6CA /* CACoordLayer.m */; };
 		14F41308238F7A650027A6CA /* TracingPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412DE238F7A640027A6CA /* TracingPoint.m */; };
-		14F41309238F7A650027A6CA /* BNDriverNaviController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412E3238F7A640027A6CA /* BNDriverNaviController.m */; };
-		14F4130A238F7A650027A6CA /* BNMapManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412E5238F7A640027A6CA /* BNMapManager.m */; };
+		14F41309238F7A650027A6CA /* NNDriverNaviController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412E3238F7A640027A6CA /* NNDriverNaviController.m */; };
+		14F4130A238F7A650027A6CA /* NNMapManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412E5238F7A640027A6CA /* NNMapManager.m */; };
 		14F4130B238F7A650027A6CA /* DriveNaviViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412E6238F7A640027A6CA /* DriveNaviViewController.m */; };
-		14F4130C238F7A650027A6CA /* BNSpeechSynthesizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412E7238F7A640027A6CA /* BNSpeechSynthesizer.m */; };
+		14F4130C238F7A650027A6CA /* NNSpeechSynthesizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412E7238F7A640027A6CA /* NNSpeechSynthesizer.m */; };
 		14F41321238F899D0027A6CA /* LineDashPolyline.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F4130D238F899C0027A6CA /* LineDashPolyline.m */; };
 		14F41322238F899D0027A6CA /* CommonUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F4130E238F899C0027A6CA /* CommonUtility.m */; };
 		14F41323238F899D0027A6CA /* MANaviRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F41310238F899C0027A6CA /* MANaviRoute.m */; };
 		14F41324238F899D0027A6CA /* ErrorInfoUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F41313238F899C0027A6CA /* ErrorInfoUtility.m */; };
-		14F41325238F899D0027A6CA /* BNGeoAnno.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F41314238F899C0027A6CA /* BNGeoAnno.m */; };
+		14F41325238F899D0027A6CA /* NNGeoAnno.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F41314238F899C0027A6CA /* NNGeoAnno.m */; };
 		14F41326238F899D0027A6CA /* car@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 14F41319238F899C0027A6CA /* car@2x.png */; };
 		14F41327238F899D0027A6CA /* MANaviPolyline.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F4131A238F899C0027A6CA /* MANaviPolyline.m */; };
 		14F41328238F899D0027A6CA /* MANaviAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F4131B238F899C0027A6CA /* MANaviAnnotation.m */; };
 		14F41329238F899D0027A6CA /* JZLocationConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F4131D238F899C0027A6CA /* JZLocationConverter.m */; };
-		14F4132A238F899D0027A6CA /* BNReGeoAnno.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F4131F238F899C0027A6CA /* BNReGeoAnno.m */; };
+		14F4132A238F899D0027A6CA /* NNReGeoAnno.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F4131F238F899C0027A6CA /* NNReGeoAnno.m */; };
 		14F41337238F8F520027A6CA /* BNThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F4132B238F8F510027A6CA /* BNThirdViewController.m */; };
 		14F41338238F8F520027A6CA /* BNFirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F4132D238F8F520027A6CA /* BNFirstViewController.m */; };
 		14F41339238F8F520027A6CA /* BNCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F41332238F8F520027A6CA /* BNCenterViewController.m */; };
@@ -85,7 +85,7 @@
 		14F4109A238F5B7E0027A6CA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		14F410AA238F5B7F0027A6CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14F410AB238F5B7F0027A6CA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		14F41135238F60140027A6CA /* WHKMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHKMapViewController.h; sourceTree = "<group>"; };
+		14F41135238F60140027A6CA /* NNMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNMapViewController.h; sourceTree = "<group>"; };
 		14F41137238F60140027A6CA /* PulsingHaloLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulsingHaloLayer.h; sourceTree = "<group>"; };
 		14F41138238F60140027A6CA /* PulsingHaloLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PulsingHaloLayer.m; sourceTree = "<group>"; };
 		14F4113A238F60140027A6CA /* BackgroundTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundTaskManager.m; sourceTree = "<group>"; };
@@ -98,7 +98,7 @@
 		14F41141238F60140027A6CA /* LocationShareModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationShareModel.m; sourceTree = "<group>"; };
 		14F41142238F60140027A6CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		14F41148238F60140027A6CA /* AppGlobleConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppGlobleConfig.h; sourceTree = "<group>"; };
-		14F4118F238F60150027A6CA /* WHKMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHKMapViewController.m; sourceTree = "<group>"; };
+		14F4118F238F60150027A6CA /* NNMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNMapViewController.m; sourceTree = "<group>"; };
 		14F41190238F60150027A6CA /* AppGlobleConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppGlobleConfig.m; sourceTree = "<group>"; };
 		14F411BF238F60D50027A6CA /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		14F411F9238F62430027A6CA /* BNLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNLanguage.h; sourceTree = "<group>"; };
@@ -135,20 +135,20 @@
 		14F41252238F66200027A6CA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		14F4129F238F77650027A6CA /* PKMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PKMainController.m; sourceTree = "<group>"; };
 		14F412A0238F77650027A6CA /* PKMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PKMainController.h; sourceTree = "<group>"; };
-		14F412A4238F7A630027A6CA /* BNPOIAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNPOIAnnotation.m; sourceTree = "<group>"; };
-		14F412A5238F7A630027A6CA /* BNDriverRouteTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNDriverRouteTipView.h; sourceTree = "<group>"; };
-		14F412A6238F7A630027A6CA /* BNMap.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BNMap.xcassets; sourceTree = "<group>"; };
+		14F412A4238F7A630027A6CA /* NNPOIAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNPOIAnnotation.m; sourceTree = "<group>"; };
+		14F412A5238F7A630027A6CA /* NNDriverRouteTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNDriverRouteTipView.h; sourceTree = "<group>"; };
+		14F412A6238F7A630027A6CA /* Map.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Map.xcassets; sourceTree = "<group>"; };
 		14F412A7238F7A630027A6CA /* UIPOIAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPOIAnnotationView.m; sourceTree = "<group>"; };
-		14F412A8238F7A630027A6CA /* BNDriverNaviController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNDriverNaviController.h; sourceTree = "<group>"; };
-		14F412A9238F7A630027A6CA /* BNDriverNaviManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNDriverNaviManager.h; sourceTree = "<group>"; };
+		14F412A8238F7A630027A6CA /* NNDriverNaviController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNDriverNaviController.h; sourceTree = "<group>"; };
+		14F412A9238F7A630027A6CA /* NNDriverNaviManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNDriverNaviManager.h; sourceTree = "<group>"; };
 		14F412BF238F7A630027A6CA /* MAAnnotationView+Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MAAnnotationView+Map.m"; sourceTree = "<group>"; };
-		14F412C0238F7A630027A6CA /* BNMapOpenHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNMapOpenHelper.m; sourceTree = "<group>"; };
-		14F412C1238F7A630027A6CA /* BNPOIAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNPOIAnnotation.h; sourceTree = "<group>"; };
+		14F412C0238F7A630027A6CA /* NNMapOpenHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNMapOpenHelper.m; sourceTree = "<group>"; };
+		14F412C1238F7A630027A6CA /* NNPOIAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNPOIAnnotation.h; sourceTree = "<group>"; };
 		14F412C2238F7A630027A6CA /* UIPOIAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPOIAnnotationView.h; sourceTree = "<group>"; };
 		14F412C3238F7A630027A6CA /* DriveNaviViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DriveNaviViewController.h; sourceTree = "<group>"; };
-		14F412C4238F7A630027A6CA /* BNDriverRouteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNDriverRouteView.m; sourceTree = "<group>"; };
+		14F412C4238F7A630027A6CA /* NNDriverRouteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNDriverRouteView.m; sourceTree = "<group>"; };
 		14F412C5238F7A630027A6CA /* MAAnnotationView+Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MAAnnotationView+Map.h"; sourceTree = "<group>"; };
-		14F412C6238F7A630027A6CA /* BNDriverRouteTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNDriverRouteTipView.m; sourceTree = "<group>"; };
+		14F412C6238F7A630027A6CA /* NNDriverRouteTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNDriverRouteTipView.m; sourceTree = "<group>"; };
 		14F412C8238F7A640027A6CA /* GuGong.tracking */ = {isa = PBXFileReference; lastKnownFileType = file; path = GuGong.tracking; sourceTree = "<group>"; };
 		14F412C9238F7A640027A6CA /* Tracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tracking.m; sourceTree = "<group>"; };
 		14F412CA238F7A640027A6CA /* map_ball_yellow@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map_ball_yellow@3x.png"; sourceTree = "<group>"; };
@@ -156,12 +156,12 @@
 		14F412CC238F7A640027A6CA /* map_ball_yellow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map_ball_yellow@2x.png"; sourceTree = "<group>"; };
 		14F412CD238F7A640027A6CA /* Tracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tracking.h; sourceTree = "<group>"; };
 		14F412CE238F7A640027A6CA /* TrackingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackingViewController.h; sourceTree = "<group>"; };
-		14F412CF238F7A640027A6CA /* BNMapContainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNMapContainView.m; sourceTree = "<group>"; };
-		14F412D0238F7A640027A6CA /* BNDriverNaviManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNDriverNaviManager.m; sourceTree = "<group>"; };
-		14F412D1238F7A640027A6CA /* BNMapContainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNMapContainView.h; sourceTree = "<group>"; };
-		14F412D2238F7A640027A6CA /* BNDriverRouteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNDriverRouteController.m; sourceTree = "<group>"; };
-		14F412D3238F7A640027A6CA /* BNMapOpenHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNMapOpenHelper.h; sourceTree = "<group>"; };
-		14F412D4238F7A640027A6CA /* BNSpeechSynthesizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNSpeechSynthesizer.h; sourceTree = "<group>"; };
+		14F412CF238F7A640027A6CA /* NNMapContainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNMapContainView.m; sourceTree = "<group>"; };
+		14F412D0238F7A640027A6CA /* NNDriverNaviManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNDriverNaviManager.m; sourceTree = "<group>"; };
+		14F412D1238F7A640027A6CA /* NNMapContainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNMapContainView.h; sourceTree = "<group>"; };
+		14F412D2238F7A640027A6CA /* NNDriverRouteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNDriverRouteController.m; sourceTree = "<group>"; };
+		14F412D3238F7A640027A6CA /* NNMapOpenHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNMapOpenHelper.h; sourceTree = "<group>"; };
+		14F412D4238F7A640027A6CA /* NNSpeechSynthesizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNSpeechSynthesizer.h; sourceTree = "<group>"; };
 		14F412D6238F7A640027A6CA /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
 		14F412D7238F7A640027A6CA /* CACoordLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CACoordLayer.h; sourceTree = "<group>"; };
 		14F412D8238F7A640027A6CA /* TracingPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TracingPoint.h; sourceTree = "<group>"; };
@@ -174,21 +174,21 @@
 		14F412DF238F7A640027A6CA /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		14F412E0238F7A640027A6CA /* MoveAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoveAnnotationView.h; sourceTree = "<group>"; };
 		14F412E1238F7A640027A6CA /* TrackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackViewController.h; sourceTree = "<group>"; };
-		14F412E2238F7A640027A6CA /* BNMapManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNMapManager.h; sourceTree = "<group>"; };
-		14F412E3238F7A640027A6CA /* BNDriverNaviController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNDriverNaviController.m; sourceTree = "<group>"; };
-		14F412E4238F7A640027A6CA /* BNDriverRouteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNDriverRouteView.h; sourceTree = "<group>"; };
-		14F412E5238F7A640027A6CA /* BNMapManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNMapManager.m; sourceTree = "<group>"; };
+		14F412E2238F7A640027A6CA /* NNMapManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNMapManager.h; sourceTree = "<group>"; };
+		14F412E3238F7A640027A6CA /* NNDriverNaviController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNDriverNaviController.m; sourceTree = "<group>"; };
+		14F412E4238F7A640027A6CA /* NNDriverRouteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNDriverRouteView.h; sourceTree = "<group>"; };
+		14F412E5238F7A640027A6CA /* NNMapManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNMapManager.m; sourceTree = "<group>"; };
 		14F412E6238F7A640027A6CA /* DriveNaviViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DriveNaviViewController.m; sourceTree = "<group>"; };
-		14F412E7238F7A640027A6CA /* BNSpeechSynthesizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNSpeechSynthesizer.m; sourceTree = "<group>"; };
-		14F412E8238F7A640027A6CA /* BNDriverRouteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNDriverRouteController.h; sourceTree = "<group>"; };
+		14F412E7238F7A640027A6CA /* NNSpeechSynthesizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNSpeechSynthesizer.m; sourceTree = "<group>"; };
+		14F412E8238F7A640027A6CA /* NNDriverRouteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNDriverRouteController.h; sourceTree = "<group>"; };
 		14F4130D238F899C0027A6CA /* LineDashPolyline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineDashPolyline.m; sourceTree = "<group>"; };
 		14F4130E238F899C0027A6CA /* CommonUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonUtility.m; sourceTree = "<group>"; };
-		14F4130F238F899C0027A6CA /* BNReGeoAnno.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNReGeoAnno.h; sourceTree = "<group>"; };
+		14F4130F238F899C0027A6CA /* NNReGeoAnno.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNReGeoAnno.h; sourceTree = "<group>"; };
 		14F41310238F899C0027A6CA /* MANaviRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MANaviRoute.m; sourceTree = "<group>"; };
 		14F41311238F899C0027A6CA /* ErrorInfoUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorInfoUtility.h; sourceTree = "<group>"; };
 		14F41312238F899C0027A6CA /* MANaviAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MANaviAnnotation.h; sourceTree = "<group>"; };
 		14F41313238F899C0027A6CA /* ErrorInfoUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorInfoUtility.m; sourceTree = "<group>"; };
-		14F41314238F899C0027A6CA /* BNGeoAnno.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNGeoAnno.m; sourceTree = "<group>"; };
+		14F41314238F899C0027A6CA /* NNGeoAnno.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNGeoAnno.m; sourceTree = "<group>"; };
 		14F41315238F899C0027A6CA /* CommonUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonUtility.h; sourceTree = "<group>"; };
 		14F41316238F899C0027A6CA /* LineDashPolyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineDashPolyline.h; sourceTree = "<group>"; };
 		14F41317238F899C0027A6CA /* MANaviPolyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MANaviPolyline.h; sourceTree = "<group>"; };
@@ -198,8 +198,8 @@
 		14F4131B238F899C0027A6CA /* MANaviAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MANaviAnnotation.m; sourceTree = "<group>"; };
 		14F4131D238F899C0027A6CA /* JZLocationConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JZLocationConverter.m; sourceTree = "<group>"; };
 		14F4131E238F899C0027A6CA /* JZLocationConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JZLocationConverter.h; sourceTree = "<group>"; };
-		14F4131F238F899C0027A6CA /* BNReGeoAnno.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNReGeoAnno.m; sourceTree = "<group>"; };
-		14F41320238F899C0027A6CA /* BNGeoAnno.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNGeoAnno.h; sourceTree = "<group>"; };
+		14F4131F238F899C0027A6CA /* NNReGeoAnno.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNReGeoAnno.m; sourceTree = "<group>"; };
+		14F41320238F899C0027A6CA /* NNGeoAnno.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNGeoAnno.h; sourceTree = "<group>"; };
 		14F4132B238F8F510027A6CA /* BNThirdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNThirdViewController.m; sourceTree = "<group>"; };
 		14F4132C238F8F510027A6CA /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		14F4132D238F8F520027A6CA /* BNFirstViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNFirstViewController.m; sourceTree = "<group>"; };
@@ -268,8 +268,8 @@
 				14F41335238F8F520027A6CA /* HomeViewController.m */,
 				14F412A0238F77650027A6CA /* PKMainController.h */,
 				14F4129F238F77650027A6CA /* PKMainController.m */,
-				14F41135238F60140027A6CA /* WHKMapViewController.h */,
-				14F4118F238F60150027A6CA /* WHKMapViewController.m */,
+				14F41135238F60140027A6CA /* NNMapViewController.h */,
+				14F4118F238F60150027A6CA /* NNMapViewController.m */,
 				14F411C0238F619B0027A6CA /* BNTool */,
 				14F41139238F60140027A6CA /* LocationTracker */,
 				14F41149238F60140027A6CA /* MapView */,
@@ -319,27 +319,27 @@
 			isa = PBXGroup;
 			children = (
 				14F412AA238F7A630027A6CA /* AMapOthers */,
-				14F412A8238F7A630027A6CA /* BNDriverNaviController.h */,
-				14F412E3238F7A640027A6CA /* BNDriverNaviController.m */,
-				14F412A9238F7A630027A6CA /* BNDriverNaviManager.h */,
-				14F412D0238F7A640027A6CA /* BNDriverNaviManager.m */,
-				14F412E8238F7A640027A6CA /* BNDriverRouteController.h */,
-				14F412D2238F7A640027A6CA /* BNDriverRouteController.m */,
-				14F412A5238F7A630027A6CA /* BNDriverRouteTipView.h */,
-				14F412C6238F7A630027A6CA /* BNDriverRouteTipView.m */,
-				14F412E4238F7A640027A6CA /* BNDriverRouteView.h */,
-				14F412C4238F7A630027A6CA /* BNDriverRouteView.m */,
-				14F412A6238F7A630027A6CA /* BNMap.xcassets */,
-				14F412D1238F7A640027A6CA /* BNMapContainView.h */,
-				14F412CF238F7A640027A6CA /* BNMapContainView.m */,
-				14F412E2238F7A640027A6CA /* BNMapManager.h */,
-				14F412E5238F7A640027A6CA /* BNMapManager.m */,
-				14F412D3238F7A640027A6CA /* BNMapOpenHelper.h */,
-				14F412C0238F7A630027A6CA /* BNMapOpenHelper.m */,
-				14F412C1238F7A630027A6CA /* BNPOIAnnotation.h */,
-				14F412A4238F7A630027A6CA /* BNPOIAnnotation.m */,
-				14F412D4238F7A640027A6CA /* BNSpeechSynthesizer.h */,
-				14F412E7238F7A640027A6CA /* BNSpeechSynthesizer.m */,
+				14F412A8238F7A630027A6CA /* NNDriverNaviController.h */,
+				14F412E3238F7A640027A6CA /* NNDriverNaviController.m */,
+				14F412A9238F7A630027A6CA /* NNDriverNaviManager.h */,
+				14F412D0238F7A640027A6CA /* NNDriverNaviManager.m */,
+				14F412E8238F7A640027A6CA /* NNDriverRouteController.h */,
+				14F412D2238F7A640027A6CA /* NNDriverRouteController.m */,
+				14F412A5238F7A630027A6CA /* NNDriverRouteTipView.h */,
+				14F412C6238F7A630027A6CA /* NNDriverRouteTipView.m */,
+				14F412E4238F7A640027A6CA /* NNDriverRouteView.h */,
+				14F412C4238F7A630027A6CA /* NNDriverRouteView.m */,
+				14F412A6238F7A630027A6CA /* Map.xcassets */,
+				14F412D1238F7A640027A6CA /* NNMapContainView.h */,
+				14F412CF238F7A640027A6CA /* NNMapContainView.m */,
+				14F412E2238F7A640027A6CA /* NNMapManager.h */,
+				14F412E5238F7A640027A6CA /* NNMapManager.m */,
+				14F412D3238F7A640027A6CA /* NNMapOpenHelper.h */,
+				14F412C0238F7A630027A6CA /* NNMapOpenHelper.m */,
+				14F412C1238F7A630027A6CA /* NNPOIAnnotation.h */,
+				14F412A4238F7A630027A6CA /* NNPOIAnnotation.m */,
+				14F412D4238F7A640027A6CA /* NNSpeechSynthesizer.h */,
+				14F412E7238F7A640027A6CA /* NNSpeechSynthesizer.m */,
 				14F412C3238F7A630027A6CA /* DriveNaviViewController.h */,
 				14F412E6238F7A640027A6CA /* DriveNaviViewController.m */,
 				14F412C5238F7A630027A6CA /* MAAnnotationView+Map.h */,
@@ -394,10 +394,10 @@
 			isa = PBXGroup;
 			children = (
 				14F4131C238F899C0027A6CA /* JZLocationConverter */,
-				14F41320238F899C0027A6CA /* BNGeoAnno.h */,
-				14F41314238F899C0027A6CA /* BNGeoAnno.m */,
-				14F4130F238F899C0027A6CA /* BNReGeoAnno.h */,
-				14F4131F238F899C0027A6CA /* BNReGeoAnno.m */,
+				14F41320238F899C0027A6CA /* NNGeoAnno.h */,
+				14F41314238F899C0027A6CA /* NNGeoAnno.m */,
+				14F4130F238F899C0027A6CA /* NNReGeoAnno.h */,
+				14F4131F238F899C0027A6CA /* NNReGeoAnno.m */,
 				14F41319238F899C0027A6CA /* car@2x.png */,
 				14F41315238F899C0027A6CA /* CommonUtility.h */,
 				14F4130E238F899C0027A6CA /* CommonUtility.m */,
@@ -538,7 +538,7 @@
 				14F412FE238F7A650027A6CA /* map_ball_yellow@2x.png in Resources */,
 				14F41306238F7A650027A6CA /* map_trackingPoints_blue@3x.png in Resources */,
 				14F412FC238F7A650027A6CA /* map_ball_yellow@3x.png in Resources */,
-				14F412EA238F7A650027A6CA /* BNMap.xcassets in Resources */,
+				14F412EA238F7A650027A6CA /* Map.xcassets in Resources */,
 				14F412FA238F7A650027A6CA /* GuGong.tracking in Resources */,
 				14F41326238F899D0027A6CA /* car@2x.png in Resources */,
 				14F41196238F60150027A6CA /* Assets.xcassets in Resources */,
@@ -619,16 +619,16 @@
 				14F4133A238F8F520027A6CA /* BNSecondViewController.m in Sources */,
 				14F412FB238F7A650027A6CA /* Tracking.m in Sources */,
 				14F412F6238F7A650027A6CA /* MAAnnotationView+Map.m in Sources */,
-				14F41309238F7A650027A6CA /* BNDriverNaviController.m in Sources */,
+				14F41309238F7A650027A6CA /* NNDriverNaviController.m in Sources */,
 				14F4122B238F62450027A6CA /* BNAccountTool.m in Sources */,
-				14F4132A238F899D0027A6CA /* BNReGeoAnno.m in Sources */,
-				14F4130A238F7A650027A6CA /* BNMapManager.m in Sources */,
-				14F412F9238F7A650027A6CA /* BNDriverRouteTipView.m in Sources */,
+				14F4132A238F899D0027A6CA /* NNReGeoAnno.m in Sources */,
+				14F4130A238F7A650027A6CA /* NNMapManager.m in Sources */,
+				14F412F9238F7A650027A6CA /* NNDriverRouteTipView.m in Sources */,
 				14F4122D238F62450027A6CA /* BNEmail.m in Sources */,
 				14F4122E238F62450027A6CA /* BNNum.m in Sources */,
 				14F4130B238F7A650027A6CA /* DriveNaviViewController.m in Sources */,
 				14F4133B238F8F520027A6CA /* BNFourthViewController.m in Sources */,
-				14F412E9238F7A650027A6CA /* BNPOIAnnotation.m in Sources */,
+				14F412E9238F7A650027A6CA /* NNPOIAnnotation.m in Sources */,
 				14F41193238F60150027A6CA /* TrackRecordsController.m in Sources */,
 				14F412FD238F7A650027A6CA /* TrackingViewController.m in Sources */,
 				14F41338238F8F520027A6CA /* BNFirstViewController.m in Sources */,
@@ -640,28 +640,28 @@
 				14F4122C238F62450027A6CA /* PictureController.m in Sources */,
 				14F41220238F62450027A6CA /* Utilities.m in Sources */,
 				14F4122F238F62450027A6CA /* UncaughtExceptionHandler.m in Sources */,
-				14F41325238F899D0027A6CA /* BNGeoAnno.m in Sources */,
-				14F41300238F7A650027A6CA /* BNDriverNaviManager.m in Sources */,
+				14F41325238F899D0027A6CA /* NNGeoAnno.m in Sources */,
+				14F41300238F7A650027A6CA /* NNDriverNaviManager.m in Sources */,
 				14F41222238F62450027A6CA /* BNFileHandler.m in Sources */,
 				14F41303238F7A650027A6CA /* TrackViewController.m in Sources */,
 				14F412EB238F7A650027A6CA /* UIPOIAnnotationView.m in Sources */,
-				14F41301238F7A650027A6CA /* BNDriverRouteController.m in Sources */,
+				14F41301238F7A650027A6CA /* NNDriverRouteController.m in Sources */,
 				14F4122A238F62450027A6CA /* BNLanguage.m in Sources */,
 				14F41223238F62450027A6CA /* GlobleConst.m in Sources */,
 				14F41324238F899D0027A6CA /* ErrorInfoUtility.m in Sources */,
-				14F411BD238F60150027A6CA /* WHKMapViewController.m in Sources */,
-				14F412F8238F7A650027A6CA /* BNDriverRouteView.m in Sources */,
+				14F411BD238F60150027A6CA /* NNMapViewController.m in Sources */,
+				14F412F8238F7A650027A6CA /* NNDriverRouteView.m in Sources */,
 				14F4109B238F5B7E0027A6CA /* AppDelegate.m in Sources */,
 				14F41302238F7A650027A6CA /* Util.m in Sources */,
 				14F41322238F899D0027A6CA /* CommonUtility.m in Sources */,
-				14F4130C238F7A650027A6CA /* BNSpeechSynthesizer.m in Sources */,
+				14F4130C238F7A650027A6CA /* NNSpeechSynthesizer.m in Sources */,
 				14F41328238F899D0027A6CA /* MANaviAnnotation.m in Sources */,
-				14F412F7238F7A650027A6CA /* BNMapOpenHelper.m in Sources */,
+				14F412F7238F7A650027A6CA /* NNMapOpenHelper.m in Sources */,
 				14F41307238F7A650027A6CA /* CACoordLayer.m in Sources */,
 				14F41308238F7A650027A6CA /* TracingPoint.m in Sources */,
 				14F41195238F60150027A6CA /* LocationShareModel.m in Sources */,
 				14F41221238F62450027A6CA /* BNNoti.m in Sources */,
-				14F412FF238F7A650027A6CA /* BNMapContainView.m in Sources */,
+				14F412FF238F7A650027A6CA /* NNMapContainView.m in Sources */,
 				14F41329238F899D0027A6CA /* JZLocationConverter.m in Sources */,
 				14F4121F238F62450027A6CA /* Utilities_DM.m in Sources */,
 				14F410AC238F5B7F0027A6CA /* main.m in Sources */,

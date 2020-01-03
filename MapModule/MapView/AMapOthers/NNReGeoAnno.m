@@ -1,21 +1,21 @@
 //
-//  BNReGeoAnno.m
+//  NNReGeoAnno.m
 //  HuiZhuBang
 //
 //  Created by BIN on 2017/9/9.
 //  Copyright © 2017年 Shang. All rights reserved.
 //
 
-#import "BNReGeoAnno.h"
+#import "NNReGeoAnno.h"
 
-@interface BNReGeoAnno ()
+@interface NNReGeoAnno ()
 
 @property (nonatomic, readwrite, strong) AMapReGeocode *reGeocode;
 @property (nonatomic, readwrite) CLLocationCoordinate2D coordinate;
 
 @end
 
-@implementation BNReGeoAnno
+@implementation NNReGeoAnno
 
 - (void)updateContent{
     /* 包含 省, 市, 区以及乡镇.  */

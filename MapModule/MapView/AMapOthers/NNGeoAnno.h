@@ -1,5 +1,5 @@
 //
-//  BNGeoAnno.h
+//  NNGeoAnno.h
 //  HuiZhuBang
 //
 //  Created by BIN on 2017/9/9.
@@ -11,7 +11,7 @@
 #import <MAMapKit/MAMapKit.h>
 #import <AMapSearchKit/AMapCommonObj.h>
 
-@interface BNGeoAnno : NSObject
+@interface NNGeoAnno : NSObject
 
 @property (nonatomic, readonly, strong) AMapGeocode *geocode;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;

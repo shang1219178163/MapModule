@@ -1,5 +1,5 @@
 //
-//  BNDriverRouteView.h
+//  NNDriverRouteView.h
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/2.
@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BNMapContainView.h"
+#import "NNMapContainView.h"
 #import "Tracking.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -15,9 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  驾车路径规划视图
  */
-@interface BNDriverRouteView : UIView
+@interface NNDriverRouteView : UIView
 
-@property (nonatomic, strong) BNMapContainView *containView;
+@property (nonatomic, strong) NNMapContainView *containView;
 
 @property (nonatomic, strong, readonly) Tracking *tracking;
 @property (nonatomic, strong, readonly) NSMutableArray * trackingPoints;

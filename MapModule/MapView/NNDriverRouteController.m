@@ -1,16 +1,16 @@
 //
-//  BNDriverRouteController.m
+//  NNDriverRouteController.m
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/2.
 //  Copyright © 2019 Xi'an iRain IOT Technology Service CO., Ltd. . All rights reserved.
 //
 
-#import "BNDriverRouteController.h"
-#import "BNDriverNaviManager.h"
+#import "NNDriverRouteController.h"
+#import "NNDriverNaviManager.h"
 #import "UIPOIAnnotationView.h"
 #import "MAAnnotationView+Map.h"
-#import "BNMapOpenHelper.h"
+#import "NNMapOpenHelper.h"
 #import "TrackViewController.h"
 
 #import "MoveAnnotationView.h"
@@ -19,9 +19,9 @@
 
 #import <Masonry/Masonry.h>
 
-@interface BNDriverRouteController ()<TrackingDelegate>
+@interface NNDriverRouteController ()<TrackingDelegate>
 
-@property (nonatomic, strong) BNDriverNaviManager *driverNaviManager;
+@property (nonatomic, strong) NNDriverNaviManager *driverNaviManager;
 @property (nonatomic, strong) MAPointAnnotation * moveAnno;
 @property (nonatomic, strong) NSMutableArray * trackingPoints;
 
@@ -29,7 +29,7 @@
 
 @end
 
-@implementation BNDriverRouteController
+@implementation NNDriverRouteController
 
 -(void)viewDidLoad {
     [super viewDidLoad];
@@ -123,10 +123,10 @@
 }
 
 - (void)presenterToDriveNaviController{
-//    BNDriverNaviManager * manager = [[BNDriverNaviManager alloc]init];
-//    BNDriverNaviManager * manager = BNDriverNaviManager.shareInstance;
+//    NNDriverNaviManager * manager = [[NNDriverNaviManager alloc]init];
+//    NNDriverNaviManager * manager = NNDriverNaviManager.shareInstance;
 
-//    BNDriveNaviController *driveNaviController = [[BNDriverNaviController alloc]init];
+//    BNDriveNaviController *driveNaviController = [[NNDriverNaviController alloc]init];
 //    driveNaviController.delegate = self;
 //    [manager.driveManager addDataRepresentative: driveNaviController.driveView];
 //    [manager.driveManager setAllowsBackgroundLocationUpdates:YES];
@@ -153,15 +153,15 @@
         NSInteger idx = [list indexOfObject:action.title];
         switch (idx) {
             case 0:
-                [BNMapOpenHelper openGDMapWithEndPoint:self.endPoint address:address];
+                [NNMapOpenHelper openGDMapWithEndPoint:self.endPoint address:address];
 
                 break;
             case 1:
-                [BNMapOpenHelper openBaiDuMapWithStartPoint:self.startPoint endPoint:self.endPoint];
+                [NNMapOpenHelper openBaiDuMapWithStartPoint:self.startPoint endPoint:self.endPoint];
 
                 break;
             case 2:
-                [BNMapOpenHelper openAppleMapWithEndPoint:self.endPoint address:address];
+                [NNMapOpenHelper openAppleMapWithEndPoint:self.endPoint address:address];
 
                 break;
             case 3:
@@ -178,7 +178,7 @@
 - (void)openSDKDriverNavi{
     AMapNaviPoint *startPoint = AMapNaviPointFromCoordinate(self.startPoint);
     AMapNaviPoint *endPoint = AMapNaviPointFromCoordinate(self.endPoint);
-    BNDriverNaviManager *manager = BNDriverNaviManager.shareInstance;
+    NNDriverNaviManager *manager = NNDriverNaviManager.shareInstance;
     
     @weakify(self);
     [manager calculateDriveRouteWithStartPoint:startPoint endPoint:endPoint handler:^(AMapNaviDriveManager *driveManager, AMapNaviRoutePlanType type, NSError *error) {
@@ -220,12 +220,12 @@
         UIPOIAnnotationView * annoView = (UIPOIAnnotationView *)end;
         [self.routeView.containView.mapView addAnnotation:annoView.annotation];
 
-        BNPOIAnnotation * anno = (BNPOIAnnotation *)annoView.annotation;
+        NNPOIAnnotation * anno = (NNPOIAnnotation *)annoView.annotation;
         self.routeTipView.labelSub.text = anno.poi.name;
 //        @weakify(self);
         self.routeView.containView.viewForAnnotationHandler = ^MAAnnotationView *(MAMapView *mapView, id<MAAnnotation> annotation) {
 //            @strongify(self);
-            if ([annotation isKindOfClass:BNPOIAnnotation.class]){
+            if ([annotation isKindOfClass:NNPOIAnnotation.class]){
                 UIPOIAnnotationView * view = [UIPOIAnnotationView mapView:mapView viewForAnnotation:annotation];
                 
                 view.label.text = annoView.label.text;
@@ -240,9 +240,9 @@
 
 #pragma mark - -lazy
 
--(BNDriverRouteView *)routeView{
+-(NNDriverRouteView *)routeView{
     if (!_routeView) {
-        _routeView = [[BNDriverRouteView alloc]initWithFrame:CGRectZero];
+        _routeView = [[NNDriverRouteView alloc]initWithFrame:CGRectZero];
         
         @weakify(self);
         _routeView.distanceInfoHandler = ^(NSString * _Nonnull distanceInfo) {
@@ -254,9 +254,9 @@
     return _routeView;
 }
 
--(BNDriverRouteTipView *)routeTipView{
+-(NNDriverRouteTipView *)routeTipView{
     if (!_routeTipView) {
-        _routeTipView = [[BNDriverRouteTipView alloc]initWithFrame:CGRectZero];
+        _routeTipView = [[NNDriverRouteTipView alloc]initWithFrame:CGRectZero];
         _routeTipView.label.font = [UIFont systemFontOfSize:30];
         _routeTipView.labelSub.font = [UIFont systemFontOfSize:20];
         
@@ -270,9 +270,9 @@
     return _routeTipView;
 }
 
--(BNDriverNaviManager *)driverNaviManager{
+-(NNDriverNaviManager *)driverNaviManager{
     if (!_driverNaviManager) {
-        _driverNaviManager = [[BNDriverNaviManager alloc]init];
+        _driverNaviManager = [[NNDriverNaviManager alloc]init];
     }
     return _driverNaviManager;
 }

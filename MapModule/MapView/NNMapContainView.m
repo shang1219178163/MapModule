@@ -6,12 +6,12 @@
 //  Copyright © 2019 Xi'an iRain IOT Technology Service CO., Ltd. . All rights reserved.
 //
 
-#import "BNMapContainView.h"
+#import "NNMapContainView.h"
 #import "UIPOIAnnotationView.h"
 #import "MoveAnnotationView.h"
 
 
-@interface BNMapContainView ()
+@interface NNMapContainView ()
 
 @property (nonatomic, strong) NSUserDefaults *userDefaults;
 
@@ -31,7 +31,7 @@
 
 @end
 
-@implementation BNMapContainView
+@implementation NNMapContainView
 
 - (instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
@@ -45,10 +45,10 @@
 
 
 + (instancetype)shared{
-    static BNMapContainView *_instance;
+    static NNMapContainView *_instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _instance = [[BNMapContainView alloc]initWithFrame:CGRectZero];
+        _instance = [[NNMapContainView alloc]initWithFrame:CGRectZero];
     });
     return _instance;
 }
@@ -101,9 +101,9 @@
 //        return self.viewForAnnotationHandler(mapView, annotation);
 //    }
  
-    if ([annotation isKindOfClass: BNPOIAnnotation.class]){
+    if ([annotation isKindOfClass: NNPOIAnnotation.class]){
         static NSString *poiIdentifier = @"BNPOIAnnotation";
-        BNPOIAnnotation * anno = (BNPOIAnnotation *)annotation;
+        NNPOIAnnotation * anno = (NNPOIAnnotation *)annotation;
         UIPOIAnnotationView * annoView = [UIPOIAnnotationView mapView:mapView viewForAnnotation:annotation identifier:poiIdentifier];
   
         annoView.label.text = [NSString stringWithFormat:@"¥%@",@(arc4random()%9)];
@@ -114,7 +114,7 @@
         static NSString *userIdentifier = @"MAUserLocation";
         MAPinAnnotationView * annoView = [MAPinAnnotationView mapView:mapView viewForAnnotation:annotation identifier:userIdentifier];
         NSString * annoTitle = kAnnoTitleUser;
-        annoView.image = [UIImage imageNamed:BNMapManager.shared.annViewDict[annoTitle]];
+        annoView.image = [UIImage imageNamed:NNMapManager.shared.annViewDict[annoTitle]];
 //        annoView.image = UIImageNamed(@"map_userLocation_default");
 
         return annoView;
@@ -129,8 +129,8 @@
         else {
             annoView = [MAAnnotationView mapView:mapView viewForAnnotation:annotation identifier:pointIdentifier];
         }
-        NSString * annoTitle = [BNMapManager.shared.annViewDict.allKeys containsObject:annotation.title] ? annotation.title : kAnnoTitleDefault;
-        annoView.image = [UIImage imageNamed:BNMapManager.shared.annViewDict[annoTitle]];
+        NSString * annoTitle = [NNMapManager.shared.annViewDict.allKeys containsObject:annotation.title] ? annotation.title : kAnnoTitleDefault;
+        annoView.image = [UIImage imageNamed:NNMapManager.shared.annViewDict[annoTitle]];
         return annoView;
     }
     return nil;
@@ -246,7 +246,7 @@
         annoEnd = pointAnno;
         DDLog(@"%@_%@",NSStringFromCoordinate(annoStart.coordinate), NSStringFromCoordinate(annoEnd.coordinate));
 
-        [BNMapManager.shared routeSearchStartPoint:annoStart.coordinate endPoint:annoEnd.coordinate strategy:5 type:@"0" handler:^(AMapRouteSearchBaseRequest *request, AMapRouteSearchResponse *response, NSError *error) {
+        [NNMapManager.shared routeSearchStartPoint:annoStart.coordinate endPoint:annoEnd.coordinate strategy:5 type:@"0" handler:^(AMapRouteSearchBaseRequest *request, AMapRouteSearchResponse *response, NSError *error) {
             if (error) {
                 DDLog(@"error:%@",error);
                 
@@ -299,7 +299,7 @@
 #pragma mark - layz
 - (MAMapView *)mapView{
     if (!_mapView) {
-        _mapView = BNMapManager.createDefaultMapView;
+        _mapView = NNMapManager.createDefaultMapView;
         _mapView.frame = self.bounds;
         _mapView.delegate = self;
         
@@ -309,14 +309,14 @@
 
 -(UIButton *)locaBtn{
     if (!_locaBtn) {
-        _locaBtn = BNMapManager.createDefaultLocaBtn;
+        _locaBtn = NNMapManager.createDefaultLocaBtn;
     }
     return _locaBtn;
 }
 
 - (AMapLocationManager *)locationManager {
     if (!_locationManager) {
-        _locationManager = BNMapManager.createDefaultLocationManager;
+        _locationManager = NNMapManager.createDefaultLocationManager;
         _locationManager.delegate = self;
         
     }

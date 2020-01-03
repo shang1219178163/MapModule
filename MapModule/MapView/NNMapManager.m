@@ -1,12 +1,12 @@
 //
-//  BNMapManager.m
+//  NNMapManager.m
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/2.
 //  Copyright © 2019 Xi'an iRain IOT Technology Service CO., Ltd. . All rights reserved.
 //
 
-#import "BNMapManager.h"
+#import "NNMapManager.h"
 
 NSString * NSStringFromCoordinate(CLLocationCoordinate2D coordinate) {
     NSString * string = [NSString stringWithFormat:@"{%.8f,%.8f}",coordinate.latitude,coordinate.longitude];
@@ -184,7 +184,7 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
 //    return coords;
 //}
 
-@interface BNMapManager ()
+@interface NNMapManager ()
 
 @property (nonatomic, strong) NSUserDefaults *userDefaults;
 
@@ -203,13 +203,13 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
 
 @end
 
-@implementation BNMapManager
+@implementation NNMapManager
 
 + (instancetype)shared{
-    static BNMapManager *_instance;
+    static NNMapManager *_instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _instance = [[BNMapManager alloc]init];
+        _instance = [[NNMapManager alloc]init];
     });
     return _instance;
 }
@@ -340,8 +340,8 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
     MAPointAnnotation * pointAnno = [[MAPointAnnotation alloc] init];
     pointAnno.title      = title;
     
-    if ([BNMapManager annoWithTitle:title mapView:mapView]) {
-        pointAnno = [BNMapManager annoWithTitle:title mapView:mapView];
+    if ([NNMapManager annoWithTitle:title mapView:mapView]) {
+        pointAnno = [NNMapManager annoWithTitle:title mapView:mapView];
         
     }
     else{
@@ -785,7 +785,7 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
 -(AMapLocationManager *)locationManager {
     if (!_locationManager) {
 //        _locationManager = [[AMapLocationManager alloc] init];
-        _locationManager = BNMapManager.createDefaultLocationManager;
+        _locationManager = NNMapManager.createDefaultLocationManager;
         _locationManager.delegate = self;
         
 //        _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;

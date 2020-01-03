@@ -1,5 +1,5 @@
 //
-//  BNDriverNaviManager.h
+//  NNDriverNaviManager.h
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/1.
@@ -19,7 +19,7 @@ typedef void(^MapNaviDriveHandler)(AMapNaviDriveManager *driveManager, AMapNaviR
 /**
  驾车导航代理方法处理
  */
-@interface BNDriverNaviManager : NSObject
+@interface NNDriverNaviManager : NSObject
 
 @property (nonatomic, strong) AMapNaviDriveManager *driveManager;
 @property (nonatomic, copy) MapNaviDriveHandler naviDriveHandler;

@@ -1,5 +1,5 @@
 //
-//  WHKMapViewController.h
+//  NNMapViewController.h
 //  
 //
 //  Created by BIN on 2017/9/7.
@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#import "BNMapManager.h"
+#import "NNMapManager.h"
 
-@interface WHKMapViewController : UIViewController<MAMapViewDelegate,AMapLocationManagerDelegate,AMapSearchDelegate>
+@interface NNMapViewController : UIViewController<MAMapViewDelegate,AMapLocationManagerDelegate,AMapSearchDelegate>
 
 @property (nonatomic, strong) MAMapView *mapView;
 @property (nonatomic, strong) UIView *containView;

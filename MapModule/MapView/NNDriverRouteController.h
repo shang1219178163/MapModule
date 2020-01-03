@@ -1,5 +1,5 @@
 //
-//  BNDriverRouteController.h
+//  NNDriverRouteController.h
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/2.
@@ -8,18 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import "BNDriverRouteView.h"
-#import "BNDriverRouteTipView.h"
+#import "NNDriverRouteView.h"
+#import "NNDriverRouteTipView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
  驾车路径展示控制器
  */
-@interface BNDriverRouteController : UIViewController
+@interface NNDriverRouteController : UIViewController
 
-@property (nonatomic, strong) BNDriverRouteView *routeView;
-@property (nonatomic, strong) BNDriverRouteTipView *routeTipView;
+@property (nonatomic, strong) NNDriverRouteView *routeView;
+@property (nonatomic, strong) NNDriverRouteTipView *routeTipView;
 
 @property (nonatomic, assign) CLLocationCoordinate2D startPoint;
 @property (nonatomic, assign) CLLocationCoordinate2D endPoint;

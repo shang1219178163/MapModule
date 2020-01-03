@@ -1,5 +1,5 @@
 //
-//  BNDriverRouteTipView.h
+//  NNDriverRouteTipView.h
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/4.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BNDriverRouteTipView : UIView
+@interface NNDriverRouteTipView : UIView
 
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) UILabel *labelSub;

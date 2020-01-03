@@ -1,16 +1,16 @@
 //
-//  BNMapOpenHelper.m
+//  NNMapOpenHelper.m
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/4.
 //  Copyright © 2019 Xi'an iRain IOT Technology Service CO., Ltd. . All rights reserved.
 //
 
-#import "BNMapOpenHelper.h"
+#import "NNMapOpenHelper.h"
 #import "JZLocationConverter.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 
-@implementation BNMapOpenHelper
+@implementation NNMapOpenHelper
 
 CLLocation * CLLocationFromCoordinate(CLLocationCoordinate2D coordinate){
     CLLocation * location = [[CLLocation alloc]initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
@@ -53,12 +53,12 @@ MKMapItem * MKMapItemFromMKPlacemark(MKPlacemark *placemark){
     NSString *dev = @"0";
     NSString *style = @"0";
     NSString *urlString = [NSString stringWithFormat:@"iosamap://navi?sourceApplication=%@&backScheme=%@&poiname=%@&lat=%f&lon=%f&dev=%@&style=%@",sourceApplication, backScheme, address, endPoint.latitude, endPoint.longitude,dev,style];
-    [BNMapOpenHelper openLocationString:urlString];
+    [NNMapOpenHelper openLocationString:urlString];
 }
 
 + (void)openBaiDuMapWithStartPoint:(CLLocationCoordinate2D)startPoint endPoint:(CLLocationCoordinate2D)endPoint{
     NSString *urlString = [NSString stringWithFormat:@"baidumap://map/direction?origin=latlng:%f,%f|name:我的位置&destination=latlng:%f,%f|name:终点&mode=driving",startPoint.latitude,startPoint.longitude,endPoint.latitude,endPoint.longitude];
-    [BNMapOpenHelper openLocationString:urlString];
+    [NNMapOpenHelper openLocationString:urlString];
 }
 
 + (void)openLocationString:(NSString *)string{

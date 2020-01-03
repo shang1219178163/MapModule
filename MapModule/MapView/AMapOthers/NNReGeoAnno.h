@@ -1,5 +1,5 @@
 //
-//  BNReGeoAnno.h
+//  NNReGeoAnno.h
 //  HuiZhuBang
 //
 //  Created by BIN on 2017/9/9.
@@ -11,7 +11,7 @@
 #import <MAMapKit/MAMapKit.h>
 #import <AMapSearchKit/AMapCommonObj.h>
 
-@interface BNReGeoAnno : NSObject<MAAnnotation>
+@interface NNReGeoAnno : NSObject<MAAnnotation>
 
 @property (nonatomic, readonly, strong) AMapReGeocode *reGeocode;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;

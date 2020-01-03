@@ -1,23 +1,23 @@
 
 //
-//  WHKMapViewController.m
+//  NNMapViewController.m
 //  
 //
 //  Created by BIN on 2017/9/7.
 //  Copyright © 2017年 SHANG. All rights reserved.
 //
 
-#import "WHKMapViewController.h"
+#import "NNMapViewController.h"
 
 #import "NNGloble.h"
 #import "NNCategoryPro.h"
 
-#import "BNGeoAnno.h"
+#import "NNGeoAnno.h"
 #import "KVOController.h"
 
 static const NSInteger kRoutePaddingEdge = 20;
 
-@interface WHKMapViewController ()
+@interface NNMapViewController ()
 
 /*-------------------------------MAP------------------------------------------------*/
 
@@ -51,11 +51,11 @@ static const NSInteger kRoutePaddingEdge = 20;
 
 @end
 
-@implementation WHKMapViewController
+@implementation NNMapViewController
 
 -(NSDictionary *)dictAnnotation{
     if (!_dictAnnotation) {
-        _dictAnnotation = BNMapManager.shared.annViewDict;
+        _dictAnnotation = NNMapManager.shared.annViewDict;
     }
     return _dictAnnotation;
 }
@@ -309,8 +309,8 @@ static const NSInteger kRoutePaddingEdge = 20;
     pointAnnotation.title      = title;
     pointAnnotation.subtitle   = [NSString stringWithFormat:@"{%f, %f}", coordinate.latitude, coordinate.longitude];
     
-    if ([BNMapManager annoWithTitle:title mapView:self.mapView]) {
-        pointAnnotation = [BNMapManager annoWithTitle:title mapView:self.mapView];
+    if ([NNMapManager annoWithTitle:title mapView:self.mapView]) {
+        pointAnnotation = [NNMapManager annoWithTitle:title mapView:self.mapView];
         pointAnnotation.coordinate = coordinate;
 //        [self.mapView selectAnnotation:pointAnnotation animated:YES];
 
@@ -346,7 +346,7 @@ static const NSInteger kRoutePaddingEdge = 20;
     request.location                    = [AMapGeoPoint locationWithLatitude:coordinate.latitude longitude:coordinate.longitude];
     request.requireExtension            = YES;
     
-    [BNMapManager.shared reGeocodeSearchWithRequest:request handler:^(AMapReGeocodeSearchRequest *request, AMapReGeocodeSearchResponse *response, NSError *error) {
+    [NNMapManager.shared reGeocodeSearchWithRequest:request handler:^(AMapReGeocodeSearchRequest *request, AMapReGeocodeSearchResponse *response, NSError *error) {
         if (error) {
             DDLog(@"error:%@",error);
             
@@ -358,7 +358,7 @@ static const NSInteger kRoutePaddingEdge = 20;
 }
 
 - (void)handleMapGeocodeAddress:(NSString *)address city:(NSString *)city{
-    [BNMapManager.shared geocodeSearchWithAddress:address city:city handler:^(AMapGeocodeSearchRequest *request, AMapGeocodeSearchResponse *response, NSError *error) {
+    [NNMapManager.shared geocodeSearchWithAddress:address city:city handler:^(AMapGeocodeSearchRequest *request, AMapGeocodeSearchResponse *response, NSError *error) {
         if (error) {
             DDLog(@"error:%@",error);
             
@@ -371,7 +371,7 @@ static const NSInteger kRoutePaddingEdge = 20;
 }
 
 - (void)handleSearchRoutePlanningDrive{
-    [BNMapManager.shared routeSearchStartPoint:self.coordinateBegin endPoint:self.coordinateEnd strategy:5 type:@"0" handler:^(AMapRouteSearchBaseRequest *request, AMapRouteSearchResponse *response, NSError *error) {
+    [NNMapManager.shared routeSearchStartPoint:self.coordinateBegin endPoint:self.coordinateEnd strategy:5 type:@"0" handler:^(AMapRouteSearchBaseRequest *request, AMapRouteSearchResponse *response, NSError *error) {
         if (error) {
             DDLog(@"error:%@",error);
             

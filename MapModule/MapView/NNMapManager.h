@@ -1,5 +1,5 @@
 //
-//  BNMapManager.h
+//  NNMapManager.h
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/2.
@@ -85,7 +85,7 @@ typedef void (^MapRouteHandler)(AMapRouteSearchBaseRequest *request, AMapRouteSe
 typedef void (^MapGeoFenceHandler)(AMapGeoFenceManager *manager, NSArray <AMapGeoFenceRegion *> *regions, NSString *customID, NSError *error);
 
 @class MapLocationInfoModel;
-@interface BNMapManager : NSObject<MAMapViewDelegate, AMapSearchDelegate, AMapLocationManagerDelegate, AMapGeoFenceManagerDelegate>
+@interface NNMapManager : NSObject<MAMapViewDelegate, AMapSearchDelegate, AMapLocationManagerDelegate, AMapGeoFenceManagerDelegate>
 
 @property (nonatomic, strong) MAMapView *mapView;
 @property (nonatomic, strong) AMapLocationManager *locationManager;

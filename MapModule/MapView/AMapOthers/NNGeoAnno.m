@@ -1,21 +1,21 @@
 //
-//  BNGeoAnno.m
+//  NNGeoAnno.m
 //  HuiZhuBang
 //
 //  Created by BIN on 2017/9/9.
 //  Copyright © 2017年 Shang. All rights reserved.
 //
 
-#import "BNGeoAnno.h"
+#import "NNGeoAnno.h"
 
-@interface BNGeoAnno ()
+@interface NNGeoAnno ()
 
 @property (nonatomic, readwrite, strong) AMapGeocode *geocode;
 
 @end
 
 
-@implementation BNGeoAnno
+@implementation NNGeoAnno
 
 - (NSString *)title{
     return self.geocode.formattedAddress;

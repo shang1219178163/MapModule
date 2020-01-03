@@ -1,23 +1,23 @@
 //
-//  BNSpeechSynthesizer.m
+//  NNSpeechSynthesizer.m
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/3.
 //  Copyright © 2019 Xi'an iRain IOT Technology Service CO., Ltd. . All rights reserved.
 //
 
-#import "BNSpeechSynthesizer.h"
+#import "NNSpeechSynthesizer.h"
 #import "AVSpeechSynthesizer+Helper.h"
 #import "NNGloble.h"
 
-@implementation BNSpeechSynthesizer
+@implementation NNSpeechSynthesizer
 
 + (instancetype)shared{
     static id _instance = nil;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _instance = [[BNSpeechSynthesizer alloc] init];
+        _instance = [[NNSpeechSynthesizer alloc] init];
     });
     return _instance;
 }

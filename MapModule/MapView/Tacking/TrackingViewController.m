@@ -10,7 +10,7 @@
 #import <MAMapKit/MAMapKit.h>
 #import "Tracking.h"
 
-#import "BNMapManager.h"
+#import "NNMapManager.h"
 
 @interface TrackingViewController ()<MAMapViewDelegate, TrackingDelegate>
 
@@ -81,7 +81,7 @@
 
 /* 构建mapView. */
 - (void)setupMapView{
-    _mapView = BNMapManager.createDefaultMapView;
+    _mapView = NNMapManager.createDefaultMapView;
     _mapView.frame = self.view.bounds;
     
 //    self.mapView = [[MAMapView alloc] initWithFrame:self.view.bounds];

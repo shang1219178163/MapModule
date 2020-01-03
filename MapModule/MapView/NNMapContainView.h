@@ -1,5 +1,5 @@
 //
-//  BNMapView.h
+//  NNMapView.h
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/3/18.
@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-#import "BNMapManager.h"
+#import "NNMapManager.h"
 #import "MAAnnotationView+Map.h"
-#import "BNPOIAnnotation.h"
+#import "NNPOIAnnotation.h"
 
 @class MapLocationInfoModel;
 
-@interface BNMapContainView : UIView<MAMapViewDelegate, AMapSearchDelegate, AMapLocationManagerDelegate>
+@interface NNMapContainView : UIView<MAMapViewDelegate, AMapSearchDelegate, AMapLocationManagerDelegate>
 
 @property (nonatomic, strong) MAMapView *mapView;
 @property (nonatomic, strong) AMapLocationManager *locationManager;

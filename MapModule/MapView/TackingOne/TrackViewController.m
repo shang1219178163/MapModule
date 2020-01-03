@@ -10,7 +10,7 @@
 #import "MoveAnnotationView.h"
 #import "TracingPoint.h"
 #import "Util.h"
-#import "BNMapManager.h"
+#import "NNMapManager.h"
 
 @interface TrackViewController ()<MAMapViewDelegate>
 

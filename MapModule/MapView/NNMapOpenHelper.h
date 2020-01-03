@@ -1,5 +1,5 @@
 //
-//  BNMapOpenHelper.h
+//  NNMapOpenHelper.h
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/4.
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BNMapOpenHelper : NSObject
+@interface NNMapOpenHelper : NSObject
 
 FOUNDATION_EXPORT CLLocation * CLLocationFromCoordinate(CLLocationCoordinate2D coordinate);
 

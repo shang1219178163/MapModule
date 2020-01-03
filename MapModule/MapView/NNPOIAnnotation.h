@@ -1,5 +1,5 @@
 //
-//  BNPOIAnnotation.h
+//  NNPOIAnnotation.h
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/3/19.
@@ -20,7 +20,7 @@ typedef NS_ENUM(NSInteger, BNParkAnnotationType){
 /**
  商户POI对象
  */
-@interface BNPOIAnnotation : NSObject <MAAnnotation>
+@interface NNPOIAnnotation : NSObject <MAAnnotation>
 
 - (id)initWithPOI:(AMapPOI *)poi;
 

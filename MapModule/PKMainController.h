@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#import "BNMapContainView.h"
+#import "NNMapContainView.h"
 
 @interface PKMainController : UIViewController
 
-@property (nonatomic, strong) BNMapContainView *containView;
+@property (nonatomic, strong) NNMapContainView *containView;
 
 @end
 

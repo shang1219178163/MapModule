@@ -1,5 +1,5 @@
 //
-//  BNSpeechSynthesizer.h
+//  NNSpeechSynthesizer.h
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/3.
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BNSpeechSynthesizer : NSObject<AVSpeechSynthesizerDelegate>
+@interface NNSpeechSynthesizer : NSObject<AVSpeechSynthesizerDelegate>
 
 + (instancetype)shared;
 

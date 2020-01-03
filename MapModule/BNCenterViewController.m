@@ -33,7 +33,7 @@
 
     self.dataList = @[
                       @[@"PKMainController", @"高德地图轨迹回溯",],
-                      @[@"WHKMapViewController", @"系统相关",],
+                      @[@"NNMapViewController", @"系统相关",],
                       @[@"TrackRecordsController", @"后台二十四小时定时定位",],
                       
                       ].mutableCopy;

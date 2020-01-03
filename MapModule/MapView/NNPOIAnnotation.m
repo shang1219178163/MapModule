@@ -1,20 +1,20 @@
 //
-//  BNPOIAnnotation.m
+//  NNPOIAnnotation.m
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/3/19.
 //  Copyright © 2019 Xi'an iRain IOT Technology Service CO., Ltd. . All rights reserved.
 //
 
-#import "BNPOIAnnotation.h"
+#import "NNPOIAnnotation.h"
 
-#import "BNMapManager.h"
+#import "NNMapManager.h"
 
-@interface BNPOIAnnotation ()
+@interface NNPOIAnnotation ()
 
 @end
 
-@implementation BNPOIAnnotation
+@implementation NNPOIAnnotation
 
 //- (NSString *)title{
 //    return self.poi.name;

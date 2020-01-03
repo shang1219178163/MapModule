@@ -1,23 +1,23 @@
 //
-//  BNDriverRouteView.m
+//  NNDriverRouteView.m
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/2.
 //  Copyright © 2019 Xi'an iRain IOT Technology Service CO., Ltd. . All rights reserved.
 //
 
-#import "BNDriverRouteView.h"
+#import "NNDriverRouteView.h"
 #import <Masonry/Masonry.h>
 #import "UIPOIAnnotationView.h"
 
-@interface BNDriverRouteView ()<TrackingDelegate>
+@interface NNDriverRouteView ()<TrackingDelegate>
 
 @property (nonatomic, strong) Tracking *tracking;
 @property (nonatomic, strong) NSMutableArray * trackingPoints;
 
 @end
 
-@implementation BNDriverRouteView
+@implementation NNDriverRouteView
 
 /// coordinateInfo
 NSArray<NSString *> *RouteStepCoordsFromSteps(NSArray<AMapStep *> *steps){
@@ -91,7 +91,7 @@ NSMutableArray<MAPointAnnotation *> * RouteAnnosFromParam(CLLocationCoordinate2D
 - (void)showRouteStartPoint:(CLLocationCoordinate2D)startPoint endPoint:(CLLocationCoordinate2D)endPoint{
 
     @weakify(self);
-    [BNMapManager.shared routeSearchStartPoint:startPoint endPoint:endPoint strategy:0 type:@"0" handler:^(AMapRouteSearchBaseRequest *request, AMapRouteSearchResponse *response, NSError *error) {
+    [NNMapManager.shared routeSearchStartPoint:startPoint endPoint:endPoint strategy:0 type:@"0" handler:^(AMapRouteSearchBaseRequest *request, AMapRouteSearchResponse *response, NSError *error) {
         @strongify(self);
         
         [self presentDriveRouteWithResponse:response];
@@ -130,9 +130,9 @@ NSMutableArray<MAPointAnnotation *> * RouteAnnosFromParam(CLLocationCoordinate2D
 }
 
 #pragma make -lazy
--(BNMapContainView *)containView{
+-(NNMapContainView *)containView{
     if (!_containView) {
-        _containView = [[BNMapContainView alloc]initWithFrame:self.bounds];
+        _containView = [[NNMapContainView alloc]initWithFrame:self.bounds];
         _containView.locaBtn.hidden = true;
     }
     return _containView;

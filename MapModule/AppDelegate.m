@@ -8,11 +8,11 @@
 
 #import "AppDelegate.h"
 #import "NNCategoryPro.h"
-#import "BNMapManager.h"
+#import "NNMapManager.h"
 
 #import "LocationTracker.h"
 
-#import "WHKMapViewController.h"
+#import "NNMapViewController.h"
 
 @interface AppDelegate ()
 /// 后台定时定位

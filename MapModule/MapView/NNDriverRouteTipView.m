@@ -1,15 +1,15 @@
 //
-//  BNDriverRouteTipView.m
+//  NNDriverRouteTipView.m
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/4.
 //  Copyright © 2019 Xi'an iRain IOT Technology Service CO., Ltd. . All rights reserved.
 //
 
-#import "BNDriverRouteTipView.h"
+#import "NNDriverRouteTipView.h"
 #import <Masonry/Masonry.h>
 
-@implementation BNDriverRouteTipView
+@implementation NNDriverRouteTipView
 
 
 - (instancetype)initWithFrame:(CGRect)frame{

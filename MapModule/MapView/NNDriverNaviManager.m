@@ -1,14 +1,14 @@
 //
-//  BNDriverNaviManager.m
+//  NNDriverNaviManager.m
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/1.
 //  Copyright © 2019 Xi'an iRain IOT Technology Service CO., Ltd. . All rights reserved.
 //
 
-#import "BNDriverNaviManager.h"
-#import "BNDriverNaviController.h"
-#import "BNSpeechSynthesizer.h"
+#import "NNDriverNaviManager.h"
+#import "NNDriverNaviController.h"
+#import "NNSpeechSynthesizer.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 
 NSString * NSStringFromAMapNaviPoint(AMapNaviPoint *point) {
@@ -33,18 +33,18 @@ AMapNaviPoint * AMapNaviPointFromCoordinate(CLLocationCoordinate2D coordinate){
     return point;
 }
 
-@interface BNDriverNaviManager()<AMapNaviDriveManagerDelegate, BNDriverNaviControllerDelegate>
+@interface NNDriverNaviManager()<AMapNaviDriveManagerDelegate, NNDriverNaviControllerDelegate>
 
 
 @end
 
-@implementation BNDriverNaviManager
+@implementation NNDriverNaviManager
 
 + (instancetype)shareInstance{
-    static BNDriverNaviManager *_instance;
+    static NNDriverNaviManager *_instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _instance = [[BNDriverNaviManager alloc]init];
+        _instance = [[NNDriverNaviManager alloc]init];
     });
     return _instance;
 }
@@ -73,7 +73,7 @@ AMapNaviPoint * AMapNaviPointFromCoordinate(CLLocationCoordinate2D coordinate){
 - (void)driveManager:(AMapNaviDriveManager *)driveManager playNaviSoundString:(NSString *)soundString soundStringType:(AMapNaviSoundType)soundStringType{
     //语音播报
     DDLog(@"%@", soundString);
-    [BNSpeechSynthesizer.shared speakString:soundString];
+    [NNSpeechSynthesizer.shared speakString:soundString];
     
 }
 
@@ -83,7 +83,7 @@ AMapNaviPoint * AMapNaviPointFromCoordinate(CLLocationCoordinate2D coordinate){
 -(void)driveNaviControllerCloseSender:(AMapNaviDriveView *)driveView{
     [self.driveManager stopNavi];
     self.driveManager.allowsBackgroundLocationUpdates = NO;
-    [BNSpeechSynthesizer.shared stopSpeak];
+    [NNSpeechSynthesizer.shared stopSpeak];
 }
 
 - (void)driveNaviControllerMoreSender:(AMapNaviDriveView *)driveView{
@@ -100,7 +100,7 @@ AMapNaviPoint * AMapNaviPointFromCoordinate(CLLocationCoordinate2D coordinate){
 }
 
 - (void)presenterToDriveNaviController{
-    BNDriverNaviController *driveVC = [[BNDriverNaviController alloc] init];
+    NNDriverNaviController *driveVC = [[NNDriverNaviController alloc] init];
     driveVC.delegate = self;
     [self.driveManager addDataRepresentative:driveVC.driveView];
     [self.driveManager setAllowsBackgroundLocationUpdates:YES]; //开启这项会使回到桌面时，顶部会有蓝条的定位信息，准确来做的话，应该是导航的时候开启这个，导航结束关闭
@@ -130,9 +130,9 @@ AMapNaviPoint * AMapNaviPointFromCoordinate(CLLocationCoordinate2D coordinate){
     return _driveManager;
 }
 
-//-(BNDriverNaviController *)driveNaviController{
+//-(NNDriverNaviController *)driveNaviController{
 //    if (!_driveNaviController) {
-//        _driveNaviController = [[BNDriverNaviController alloc]init];
+//        _driveNaviController = [[NNDriverNaviController alloc]init];
 //    }
 //    return _driveNaviController;
 //}

@@ -1,5 +1,5 @@
 //
-//  BNDriverNaviController.h
+//  NNDriverNaviController.h
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/1.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AMapNaviKit/AMapNaviKit.h>
 
-@protocol BNDriverNaviControllerDelegate <NSObject>
+@protocol NNDriverNaviControllerDelegate <NSObject>
 
 @required
 - (void)driveNaviControllerCloseSender:(AMapNaviDriveView *)driveView;
@@ -21,10 +21,10 @@
 /**
  驾车导航控制器
  */
-@interface BNDriverNaviController : UIViewController
+@interface NNDriverNaviController : UIViewController
 
 @property (nonatomic, strong) AMapNaviDriveView *driveView;
-@property (nonatomic, weak) id <BNDriverNaviControllerDelegate> delegate;
+@property (nonatomic, weak) id <NNDriverNaviControllerDelegate> delegate;
 
 @property (nonatomic, strong) AMapNaviPoint *startPoint;
 @property (nonatomic, strong) AMapNaviPoint *endPoint;

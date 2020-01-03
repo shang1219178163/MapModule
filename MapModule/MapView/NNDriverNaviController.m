@@ -1,18 +1,18 @@
 //
-//  BNDriverNaviController.m
+//  NNDriverNaviController.m
 //  VehicleBonus
 //
 //  Created by Bin Shang on 2019/4/1.
 //  Copyright © 2019 Xi'an iRain IOT Technology Service CO., Ltd. . All rights reserved.
 //
 
-#import "BNDriverNaviController.h"
+#import "NNDriverNaviController.h"
 
-@interface BNDriverNaviController ()<AMapNaviDriveViewDelegate>
+@interface NNDriverNaviController ()<AMapNaviDriveViewDelegate>
 
 @end
 
-@implementation BNDriverNaviController
+@implementation NNDriverNaviController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
