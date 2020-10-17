@@ -19,6 +19,7 @@
         [self addSubview:self.labelSub];
         [self addSubview:self.btn];
         
+        self.edge = UIEdgeInsetsMake(10, 10, 10, 10);
     }
     return self;
 }
@@ -27,21 +28,21 @@
     [super layoutSubviews];
     
     [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.equalTo(self.label.superview).offset(kX_GAP);
-        make.right.equalTo(self.label.superview).offset(-kX_GAP);
+        make.top.left.equalTo(self.label.superview).offset(self.edge.top);
+        make.right.equalTo(self.label.superview).offset(-self.edge.left);
         make.height.equalTo(@(35));
     }];
     
     [self.labelSub mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.label.mas_bottom).offset(kX_GAP);
+        make.top.equalTo(self.label.mas_bottom).offset(5);
         make.left.right.height.equalTo(self.label);
 
     }];
     
     [self.btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.labelSub.mas_bottom).offset(kX_GAP);
+        make.top.equalTo(self.labelSub.mas_bottom).offset(5);
         make.left.right.equalTo(self.label);
-        make.bottom.equalTo(self.btn.superview).offset(-kX_GAP);
+        make.bottom.equalTo(self.btn.superview).offset(-self.edge.bottom);
     }];
     
 }
