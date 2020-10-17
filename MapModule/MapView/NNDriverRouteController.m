@@ -8,22 +8,18 @@
 
 #import "NNDriverRouteController.h"
 #import "NNDriverNaviManager.h"
-#import "UIPOIAnnotationView.h"
+#import "NNPOIAnnotationView.h"
 #import "MAAnnotationView+Map.h"
 #import "NNMapOpenHelper.h"
-#import "TrackViewController.h"
-
-#import "MoveAnnotationView.h"
-#import "TracingPoint.h"
-#import "Util.h"
 
 #import <Masonry/Masonry.h>
+#import <NNCategoryPro/NNCategoryPro.h>
 
-@interface NNDriverRouteController ()<TrackingDelegate>
+@interface NNDriverRouteController ()
 
-@property (nonatomic, strong) NNDriverNaviManager *driverNaviManager;
-@property (nonatomic, strong) MAPointAnnotation * moveAnno;
-@property (nonatomic, strong) NSMutableArray * trackingPoints;
+//@property (nonatomic, strong) NNDriverNaviManager *driverNaviManager;
+@property (nonatomic, strong) MAPointAnnotation *moveAnno;
+@property (nonatomic, strong) NSMutableArray *trackingPoints;
 
 @property (nonatomic, strong) NSNumber *type;;
 
@@ -35,54 +31,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self.view addSubview:self.routeView];
+    [self.view addSubview:self.containView];
     [self.view addSubview:self.routeTipView];
 
     self.type = @0;
 //    self.type = @1;
-
-    @weakify(self);
-    [self createBarItem:@"轨迹回溯" isLeft:false handler:^(id obj, UIView *item, NSInteger idx) {
-        @strongify(self);
-        switch (self.type.integerValue) {
-            case 1:
-            {
-                MoveAnnotationView * carView = (MoveAnnotationView *)[self.routeView.containView.mapView viewForAnnotation:self.moveAnno];
-                [carView addTrackingAnimationForPoints:self.trackingPoints duration:10];
-            }
-                break;
-            default:
-                [self.routeView.tracking execute];
-                break;
-        }
-    }];
     
-    self.routeView.routeSearchResponse = ^(AMapRouteSearchResponse * _Nonnull response) {
-        @strongify(self);
-
-        if (self.type.integerValue == 0) {
-            return ;
-        }
-        NSArray<AMapStep *> *steps = response.route.paths.firstObject.steps;
-        NSArray * stepCoords = RouteStepCoordsFromSteps(steps);
-        DDLog(@"steps.count_%@,stepCoords.count_%@", @(steps.count), @(stepCoords.count));
-        CLLocationCoordinate2D *coords = RouteCoordsForStepCoords(stepCoords);
-//        _coordinates = coords;
-//        _count = stepCoords.count;
-
-        [self initTrackingWithCoords:coords count:stepCoords.count];
-//
-        //show car
-        self.moveAnno.coordinate = ((TracingPoint *)self.trackingPoints.firstObject).coordinate;
-        [self.routeView.containView.mapView addAnnotation:self.moveAnno];
-
-        //points
-        NSMutableArray * routeAnnoList = RouteAnnosFromParam(coords, kAnnoTitleRoute, stepCoords.count);
-        [self.routeView.containView.mapView addAnnotations:routeAnnoList];
-        [self.routeView.containView.mapView showAnnotations:routeAnnoList animated:YES];
-    };
-    
-    [self.view getViewLayer];
+//    [self.view getViewLayer];
 }
 
 -(void)viewDidLayoutSubviews{
@@ -92,10 +47,10 @@
     [self.routeTipView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.routeTipView.superview);
         make.bottom.equalTo(self.routeTipView.superview);
-        make.height.equalTo(@(CGRectGetHeight(self.routeTipView.superview.bounds)/4.0));
+        make.height.equalTo(@(150));
     }];
     
-    [self.routeView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.containView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.routeTipView.superview);
         make.left.right.equalTo(self.routeTipView.superview);
         make.bottom.equalTo(self.routeTipView.mas_top);
@@ -105,13 +60,12 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
 
-//    [self.navigationController.navigationBar setDefaultBackgroundImage:UIImageColor(UIColor.clearColor)];
+//    [self.navigationController.navigationBar setDefaultBackgroundImage:UIImage(color: UIColor.clearColor)];
 //    self.edgesForExtendedLayout = UIRectEdgeAll;
 //    [self createBackItem:[UIImage imageNamed:@"icon_arowLeft_black"] tintColor:UIColor.blackColor];
+
     
     DDLog(@"_%@_%@_", NSStringFromCoordinate(self.startPoint),NSStringFromCoordinate(self.endPoint));
-
-    [self.routeView showRouteStartPoint:self.startPoint endPoint:self.endPoint];
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
@@ -122,34 +76,55 @@
 
 }
 
-- (void)presenterToDriveNaviController{
-//    NNDriverNaviManager * manager = [[NNDriverNaviManager alloc]init];
-//    NNDriverNaviManager * manager = NNDriverNaviManager.shareInstance;
+- (void)showRoutePlanningDrive {
+    [self.containView routePlanningDriveStartPoint:self.startPoint
+                                          endPoint:self.endPoint
+                                           handler:^(AMapRouteSearchBaseRequest * _Nonnull request, AMapRouteSearchResponse * _Nonnull response, NSError * _Nullable error) {
+            
+        AMapPath *path = response.route.paths[0];
+        if (!path || error) {
+            DDLog(@"地图信息获取失败");
+            return;
+        }
+        DDLog(@"%@", path.steps.lastObject.road);
+//        self.routeTipView.label.text = path.steps.lastObject.road.length > 0 ? path.steps.lastObject.road : path.steps.lastObject.assistantAction;
+        self.routeTipView.labelSub.text = DistanceInfoFromMeter(path.distance);
+        return;
+        __block NSMutableArray *annos = [NSMutableArray array];
+        [path.steps enumerateObjectsUsingBlock:^(AMapStep * _Nonnull step, NSUInteger idx, BOOL * _Nonnull stop) {
+                    
+            NSArray<NSString *> *coordnateInfos = [step.polyline componentsSeparatedByString:@";"];
+            [coordnateInfos enumerateObjectsUsingBlock:^(NSString * _Nonnull coordnateInfo, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (idx == 0) {
+                    CLLocationCoordinate2D coordnate = Coordinate2DFromString(coordnateInfo);
+                    MAPointAnnotation *annotation = [[MAPointAnnotation alloc]init];
+                    annotation.coordinate = coordnate;
+                    annotation.title = step.road;
+                    annotation.subtitle = step.instruction;
 
-//    BNDriveNaviController *driveNaviController = [[NNDriverNaviController alloc]init];
-//    driveNaviController.delegate = self;
-//    [manager.driveManager addDataRepresentative: driveNaviController.driveView];
-//    [manager.driveManager setAllowsBackgroundLocationUpdates:YES];
-//    [manager.driveManager startGPSNavi];
-//    [self.navigationController presentViewController:driveNaviController animated:YES completion:nil];
-    
+                    [annos addObject:annotation];
+                }
+            }];
+            
+        }];
+        [self.containView.mapView addAnnotations:annos.copy];
+        [self.containView.mapView showAnnotations:annos animated:YES];
+    }];
 }
 
-//- (void)driveNaviViewCloseButtonClicked{
-//    [self.driverNaviManager.driveManager stopNavi];
-//    self.driverNaviManager.driveManager.allowsBackgroundLocationUpdates = NO;
-//}
 
 #pragma mark - funtions
 
-- (void)goDriverNaviController{
-    NSArray * list = @[@"高德地图",@"百度地图",@"苹果地图",@"内置地图",] ;
+- (void)goDriverNavi{
+    NSArray *list = @[@"高德地图",@"百度地图",@"苹果地图",@"内置地图",];
+    list = @[@"高德地图",@"百度地图",@"苹果地图",];
+
     @weakify(self);
-    [UIAlertController showSheetTitle:nil msg:nil actionTitles:list handler:^(UIAlertController * _Nonnull alertVC, UIAlertAction * _Nonnull action) {
+    [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet]
+    .nn_addAction(list, ^(UIAlertAction * _Nonnull action) {
         @strongify(self);
-        
-        NSString * address = self.routeTipView.labelSub.text;
-        
+
+        NSString *address = self.routeTipView.labelSub.text;
         NSInteger idx = [list indexOfObject:action.title];
         switch (idx) {
             case 0:
@@ -165,93 +140,78 @@
 
                 break;
             case 3:
-                [self openSDKDriverNavi];
+//                [self openSDKDriverNavi];
 
                 break;
             default:
                 break;
         }
-    }];
+    })
+    .nn_present(true, ^{
+        
+    });
+    
 }
 
 /// 内置地图
-- (void)openSDKDriverNavi{
-    AMapNaviPoint *startPoint = AMapNaviPointFromCoordinate(self.startPoint);
-    AMapNaviPoint *endPoint = AMapNaviPointFromCoordinate(self.endPoint);
-    NNDriverNaviManager *manager = NNDriverNaviManager.shareInstance;
-    
-    @weakify(self);
-    [manager calculateDriveRouteWithStartPoint:startPoint endPoint:endPoint handler:^(AMapNaviDriveManager *driveManager, AMapNaviRoutePlanType type, NSError *error) {
-        @strongify(self);
-        if (error) {
-            DDLog(@"%@",error.description);
-            return ;
-        }
-        [self presenterToDriveNaviController];
-    }];
-}
+//- (void)openSDKDriverNavi{
+//    AMapNaviPoint *startPoint = AMapNaviPointFromCoordinate(self.startPoint);
+//    AMapNaviPoint *endPoint = AMapNaviPointFromCoordinate(self.endPoint);
+//    NNDriverNaviManager *manager = NNDriverNaviManager.shareInstance;
+//
+//    @weakify(self);
+//    [manager calculateDriveRouteWithStartPoint:startPoint endPoint:endPoint handler:^(AMapNaviDriveManager *driveManager, AMapNaviRoutePlanType type, NSError *error) {
+//        @strongify(self);
+//        if (error) {
+//            DDLog(@"%@",error.description);
+//            return ;
+//        }
+//    }];
+//}
 
-- (void)initTrackingWithCoords:(CLLocationCoordinate2D *)coords count:(NSUInteger)count{
-    _trackingPoints = [NSMutableArray array];
-    for (int i = 0; i<count - 1; i++)
-    {
-        TracingPoint * tp = [[TracingPoint alloc] init];
-        tp.coordinate = coords[i];
-        tp.direction = [Util calculateCourseFromCoordinate:coords[i] to:coords[i+1]];
-        [_trackingPoints addObject:tp];
-    }
-    
-    TracingPoint * tp = [[TracingPoint alloc] init];
-    tp.coordinate = coords[count - 1];
-    tp.direction = ((TracingPoint *)[_trackingPoints lastObject]).direction;
-    [_trackingPoints addObject:tp];
-}
-#pragma mark - -set
+#pragma mark -lazy
 
-- (void)setStart:(id)start{
-    _start = start;
-    self.startPoint = Coordinate2DFromObj(start);
-}
-
-- (void)setEnd:(id)end{
-    _end = end;
-    self.endPoint = Coordinate2DFromObj(end);
-    if ([end isKindOfClass: UIPOIAnnotationView.class]) {
-        UIPOIAnnotationView * annoView = (UIPOIAnnotationView *)end;
-        [self.routeView.containView.mapView addAnnotation:annoView.annotation];
-
-        NNPOIAnnotation * anno = (NNPOIAnnotation *)annoView.annotation;
-        self.routeTipView.labelSub.text = anno.poi.name;
-//        @weakify(self);
-        self.routeView.containView.viewForAnnotationHandler = ^MAAnnotationView *(MAMapView *mapView, id<MAAnnotation> annotation) {
-//            @strongify(self);
-            if ([annotation isKindOfClass:NNPOIAnnotation.class]){
-                UIPOIAnnotationView * view = [UIPOIAnnotationView mapView:mapView viewForAnnotation:annotation];
+-(NNMapContainView *)containView{
+    if (!_containView) {
+        _containView = ({
+            NNMapContainView *view = [[NNMapContainView alloc]initWithFrame:CGRectZero];
+            view.didUpdateUserHandler = ^(MAMapView * _Nonnull mapView, MAUserLocation * _Nonnull userLocation, BOOL updatingLocation, NSError * _Nullable error) {
+                self.startPoint = userLocation.coordinate;
+            };
+//            @weakify(self);
+//            view.viewForAnnotationHandler = ^MAAnnotationView *(MAMapView *mapView, id<MAAnnotation> annotation) {
+////              @strongify(self);
+//                if ([annotation isKindOfClass:NNPOIAnnotation.class]){
+//                    NNPOIAnnotationView * annoView = [NNPOIAnnotationView mapView:mapView viewForAnnotation:annotation];
+////                    annoView.label.text = annoView.label.text;
+////                    annoView.type = annoView.type;
+//                    return view;
+//                }
+//                return nil;
+//            };
+            view.singleTappedHandler = ^(MAMapView * _Nonnull mapView, CLLocationCoordinate2D coordinate) {
+                self.endPoint = coordinate;
                 
-                view.label.text = annoView.label.text;
-                view.type = annoView.type;
-                return view;
-            }
-            return nil;
-        };
+                [mapView removeAnnotations:mapView.annotations];
+                
+                NNPOIAnnotation *anno = [[NNPOIAnnotation alloc] init];
+                anno.coordinate = coordinate;
+                [mapView addAnnotation:anno];
+
+                [self showRoutePlanningDrive];
+                
+                [NNMapManager.shared reGeocodeSearchWithBlock:^(AMapReGeocodeSearchRequest * _Nonnull request) {
+                    request.location = AMapGeoPointFromCoordinate(coordinate);
+                    
+                } handler:^(AMapReGeocodeSearchRequest * _Nonnull request, AMapReGeocodeSearchResponse * _Nonnull response, NSError * _Nullable error) {
+                    NSString * formattedAddress = response.regeocode.formattedAddress;
+                    self.routeTipView.label.text = formattedAddress;
+                }];
+            };
+            view;
+        });
     }
-}
-
-
-#pragma mark - -lazy
-
--(NNDriverRouteView *)routeView{
-    if (!_routeView) {
-        _routeView = [[NNDriverRouteView alloc]initWithFrame:CGRectZero];
-        
-        @weakify(self);
-        _routeView.distanceInfoHandler = ^(NSString * _Nonnull distanceInfo) {
-            @strongify(self);
-            self.routeTipView.label.text = distanceInfo;
-            
-        };
-    }
-    return _routeView;
+    return _containView;
 }
 
 -(NNDriverRouteTipView *)routeTipView{
@@ -260,22 +220,19 @@
         _routeTipView.label.font = [UIFont systemFontOfSize:30];
         _routeTipView.labelSub.font = [UIFont systemFontOfSize:20];
         
-        @weakify(self);
-        [_routeTipView.btn addActionHandler:^(UIControl * _Nonnull control) {
-            @strongify(self);
-            [self goDriverNaviController];
-            
-        } forControlEvents:UIControlEventTouchUpInside];
+        [_routeTipView.btn addTarget:self action:@selector(goDriverNavi) forControlEvents:UIControlEventTouchUpInside];
     }
     return _routeTipView;
 }
 
--(NNDriverNaviManager *)driverNaviManager{
-    if (!_driverNaviManager) {
-        _driverNaviManager = [[NNDriverNaviManager alloc]init];
-    }
-    return _driverNaviManager;
-}
+
+
+//-(NNDriverNaviManager *)driverNaviManager{
+//    if (!_driverNaviManager) {
+//        _driverNaviManager = [[NNDriverNaviManager alloc]init];
+//    }
+//    return _driverNaviManager;
+//}
 
 
 -(MAPointAnnotation *)moveAnno{

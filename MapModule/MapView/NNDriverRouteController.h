@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import "NNDriverRouteView.h"
+#import "NNMapContainView.h"
 #import "NNDriverRouteTipView.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -18,14 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface NNDriverRouteController : UIViewController
 
-@property (nonatomic, strong) NNDriverRouteView *routeView;
+@property (nonatomic, strong) NNMapContainView *containView;
 @property (nonatomic, strong) NNDriverRouteTipView *routeTipView;
 
 @property (nonatomic, assign) CLLocationCoordinate2D startPoint;
 @property (nonatomic, assign) CLLocationCoordinate2D endPoint;
 
-@property (nonatomic, strong) id start;
-@property (nonatomic, strong) id end;
+@property (nonatomic, strong) NSString *address;
 
 @end
 
