@@ -23,12 +23,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"首页OC";
-
-  
     
     [self createBarItem:@"😁" isLeft:false handler:^(id obj, UIView *item, NSInteger idx) {
-        [self goController:@"TrackViewController" title:@"轨迹回溯"];
-        
+        [self.navigationController pushVC:@"TrackViewController" title:@"轨迹回溯" animated:true block:^(__kindof UIViewController * _Nonnull vc) {
+                    
+        }];
     }];
     
     [self.view addSubview:self.containView];
@@ -84,10 +83,8 @@
                 return ;
             }
             NNDriverRouteController * controller = [[NNDriverRouteController alloc]init];
-//            controller.startPoint = mapView.userLocation.coordinate;
-//            controller.endPoint = view.annotation.coordinate;
-            controller.start = mapView.userLocation;
-            controller.end = view;
+            controller.startPoint = mapView.userLocation.coordinate;
+            controller.endPoint = view.annotation.coordinate;
             [self.navigationController pushViewController:controller animated:true];
             
         };
@@ -98,52 +95,46 @@
 - (void)handleMapLocation:(UIButton *)sender{
     [NNMapManager.shared startSingleLocationWithReGeocode:true handler:^(CLLocation *location, AMapLocationReGeocode *regeocode, AMapLocationManager *manager, NSError *error) {
         if (error) {
-            [self showAlertTitle:@"error" msg:error.localizedDescription actionTitles:nil handler:nil];
-
-        } else {
-//            DDLog(@"coordinate:%@\nreGeocode:%@",NSStringFromCoordinate(location.coordinate),regeocode);
-            self.title = regeocode ? NSStringFromReGeocode(regeocode) : self.title;
-            
-            if (location){
-                //定位成功
-                self.containView.mapView.centerCoordinate = location.coordinate;
-//                [self showAlertTitle:@"定位成功" msg:NSStringFromCoordinate(location.coordinate)];
-                [NNMapManager.shared keywordsSearchWithKeywords:@"停车场" city:@"西安" page:1 coordinate:_containView.userLocationView.annotation.coordinate handler:^(AMapPOISearchBaseRequest *request, AMapPOISearchResponse *response, NSError *error) {
-                    DDLog(@"AMapInputTipsSearchRequest个数_%ld", (long)response.count);
-                    
-                    NSMutableArray *poiAnnotations = [NSMutableArray arrayWithCapacity:response.pois.count];
-                    [response.pois enumerateObjectsUsingBlock:^(AMapPOI * _Nonnull poi, NSUInteger idx, BOOL * _Nonnull stop) {
-                        NNPOIAnnotation * anno = [[NNPOIAnnotation alloc] initWithPOI:poi];
-                        anno.index = idx;
-                        [poiAnnotations addObject:anno];
-                        
-                    }];
-                    [_containView.mapView addAnnotations:[poiAnnotations subarrayWithRange:NSMakeRange(0, 20)]];
-                    /* 如果只有一个结果，设置其为中心点. */
-                    if (poiAnnotations.count >= 1){
-                        _containView.mapView.centerCoordinate = [(NNPOIAnnotation *)poiAnnotations[0] coordinate];
-                    }
-                    /* 如果有多个结果, 设置地图使所有的annotation都可见. */
-                    else{
-                        [_containView.mapView showAnnotations:poiAnnotations animated:NO];
-                    }
-                }];
-                
-                CLLocationCoordinate2D coordinate = self.containView.mapView.userLocation.location.coordinate;
-//                coordinate = self.containView.mapView.centerCoordinate;
-                [NNMapManager.shared geoFenceAddCircleRegionWithCenter:coordinate radius:1000 customID:@"999" handler:^(AMapGeoFenceManager *manager, NSArray<AMapGeoFenceRegion *> *regions, NSString *customID, NSError *error) {
-                    if (error) {
-                        DDLog(@"error_%@",error.description);
-                        return ;
-                    }
-//                    DDLog(@"_%@_%@_%@_",customID, NSStringFromCoordinate(coordinate), @(regions.firstObject.fenceStatus));
-                }];
-            } else {
-//                [MBProgressHUD showToastWithTips:kLocationFailed inView:self.navigationController.view];
-                [self showAlertTitle:@"error" msg:location.description];
-            
-            }
+            [UIAlertController alertControllerWithTitle:@"" message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert]
+            .nn_present(true, nil);
+            return;
         }
+//            DDLog(@"coordinate:%@\nreGeocode:%@",NSStringFromCoordinate(location.coordinate),regeocode);
+        self.title = regeocode ? NSStringFromReGeocode(regeocode) : self.title;
+        //定位成功
+        self.containView.mapView.centerCoordinate = location.coordinate;
+        [NNMapManager.shared keywordsSearchWithKeywords:@"停车场" city:@"西安" page:1 block:^(AMapPOIKeywordsSearchRequest * _Nonnull request) {
+                
+        } handler:^(AMapPOISearchBaseRequest * _Nonnull request, AMapPOISearchResponse * _Nonnull response, NSError * _Nullable error) {
+            DDLog(@"AMapInputTipsSearchRequest个数_%ld", (long)response.count);
+            MAMapView *mapView = self.containView.mapView;
+            
+            NSMutableArray *poiAnnotations = [NSMutableArray arrayWithCapacity:response.pois.count];
+            [response.pois enumerateObjectsUsingBlock:^(AMapPOI * _Nonnull poi, NSUInteger idx, BOOL * _Nonnull stop) {
+                NNPOIAnnotation *anno = [[NNPOIAnnotation alloc] initWithPOI:poi];
+                anno.index = idx;
+                [poiAnnotations addObject:anno];
+                
+            }];
+            [mapView addAnnotations:poiAnnotations];
+            /* 如果只有一个结果，设置其为中心点. */
+            if (poiAnnotations.count == 1){
+               mapView.centerCoordinate = [(NNPOIAnnotation *)poiAnnotations[0] coordinate];
+            } else {
+//                [_containView.mapView showAnnotations:poiAnnotations animated:NO];
+                UIEdgeInsets edge = UIEdgeInsetsMake(20, 20, 20, 20);
+                [mapView showAnnotations:poiAnnotations edgePadding:edge animated:NO];
+            }
+        }];
+        
+//        CLLocationCoordinate2D coordinate = self.containView.mapView.userLocation.location.coordinate;
+//        [NNMapManager.shared geoFenceAddCircleRegionWithCenter:coordinate radius:1000 customID:@"999" handler:^(AMapGeoFenceManager *manager, NSArray<AMapGeoFenceRegion *> *regions, NSString *customID, NSError *error) {
+//            if (error) {
+//                DDLog(@"error_%@",error.description);
+//                return ;
+//            }
+//        }];
+
     }];
 }
 
@@ -152,6 +143,8 @@
     //    self.coordinateEnd = CLLocationCoordinate2DMake(34.25771100,104.07642);
     
     //    DDLog(@"起点终点%@->%@",[NSString stringFromCoordinate:self.coordinateStart],[NSString stringFromCoordinate:self.coordinateEnd]);
+    
+    
 
 }
 

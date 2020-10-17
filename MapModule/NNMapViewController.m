@@ -314,8 +314,7 @@ static const NSInteger kRoutePaddingEdge = 20;
         pointAnnotation.coordinate = coordinate;
 //        [self.mapView selectAnnotation:pointAnnotation animated:YES];
 
-    }
-    else{
+    } else {
         [self.mapView addAnnotation:pointAnnotation];
 //        [self.mapView selectAnnotation:pointAnnotation animated:YES];
         
@@ -326,8 +325,7 @@ static const NSInteger kRoutePaddingEdge = 20;
         
 //        self.mapView.centerCoordinate = self.coordinateBegin;
 //        [self.mapView setZoomLevel:16 animated:YES];
-    }
-    else{
+    } else {
         self.coordinateEnd = pointAnnotation.coordinate;
         
         if (CLLocationCoordinate2DIsValid(self.coordinateBegin) && CLLocationCoordinate2DIsValid(self.coordinateEnd)) {
@@ -342,86 +340,40 @@ static const NSInteger kRoutePaddingEdge = 20;
 }
 
 - (void)handleMapReGeocodeWithCoordinate:(CLLocationCoordinate2D)coordinate{
-    AMapReGeocodeSearchRequest * request = [[AMapReGeocodeSearchRequest alloc]init];
-    request.location                    = [AMapGeoPoint locationWithLatitude:coordinate.latitude longitude:coordinate.longitude];
-    request.requireExtension            = YES;
-    
-    [NNMapManager.shared reGeocodeSearchWithRequest:request handler:^(AMapReGeocodeSearchRequest *request, AMapReGeocodeSearchResponse *response, NSError *error) {
-        if (error) {
-            DDLog(@"error:%@",error);
-            
-        }
-        else{
+    [NNMapManager.shared reGeocodeSearchWithBlock:^(AMapReGeocodeSearchRequest * _Nonnull request) {
+        request.location = [AMapGeoPoint locationWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+        request.requireExtension = YES;
+        } handler:^(AMapReGeocodeSearchRequest * _Nonnull request, AMapReGeocodeSearchResponse * _Nonnull response, NSError * _Nullable error) {
+            if (error) {
+                DDLog(@"error:%@",error);
+                return;
+            }
             [self handleMapGeocodeAddress:response.regeocode.formattedAddress city:@""];
-        }
-    }];
+        }];
 }
 
 - (void)handleMapGeocodeAddress:(NSString *)address city:(NSString *)city{
-    [NNMapManager.shared geocodeSearchWithAddress:address city:city handler:^(AMapGeocodeSearchRequest *request, AMapGeocodeSearchResponse *response, NSError *error) {
+    [NNMapManager.shared geocodeSearchWithBlock:^(AMapGeocodeSearchRequest * _Nonnull request) {
+        request.city = city;
+        request.address = address;
+
+    } handler:^(AMapGeocodeSearchRequest * _Nonnull request, AMapGeocodeSearchResponse * _Nonnull response, NSError * _Nullable error) {
         if (error) {
-            DDLog(@"error:%@",error);
-            
+            DDLog(@"error:%@", error);
+            return;
         }
-        else{
-            DDLog(@"%@",response);
-            
-        }
+        DDLog(@"%@",response);
     }];
 }
 
 - (void)handleSearchRoutePlanningDrive{
-    [NNMapManager.shared routeSearchStartPoint:self.coordinateBegin endPoint:self.coordinateEnd strategy:5 type:@"0" handler:^(AMapRouteSearchBaseRequest *request, AMapRouteSearchResponse *response, NSError *error) {
-        if (error) {
-            DDLog(@"error:%@",error);
+    [NNMapManager.shared routePlanningDriveStartPoint:self.coordinateBegin
+                                             endPoint:self.coordinateEnd
+                                             strategy:0
+                                              mapView:self.mapView
+                                              handler:^(AMapRouteSearchBaseRequest * _Nonnull request, AMapRouteSearchResponse * _Nonnull response, NSError * _Nullable error) {
             
-        } else {
-            [self presentDriveRouteWithResponse:response];
-            
-        }
     }];
-}
-
-/* 展示当前路线方案. */
-- (void)presentDriveRouteWithResponse:(AMapRouteSearchResponse *)response{
-    [self presentCurrentRouteBeginPoint:self.coordinateBegin endPoint:self.coordinateEnd response:response];
-    return;
-    //移除地图原本的遮盖
-    [self.mapView removeOverlays:self.pathPolylines];
-    self.pathPolylines = nil;
-    
-    // 只显⽰示第⼀条 规划的路径
-    self.pathPolylines = MapPolylinesForPath(response.route.paths[0]);
-    DDLog(@"steps_%@",response.route.paths[0]);
-    //添加新的遮盖，然后会触发代理方法进行绘制
-    [self.mapView addOverlays:self.pathPolylines];
-    /* 缩放地图使其适应polylines的展示. */
-    [self.mapView setVisibleMapRect:[CommonUtility mapRectForOverlays:self.pathPolylines]
-                        edgePadding:UIEdgeInsetsMake(kRoutePaddingEdge, kRoutePaddingEdge, kRoutePaddingEdge, kRoutePaddingEdge)
-                           animated:YES];
-    
-}
-
-
-//在地图上显示当前选择的路径
-- (void)presentCurrentRouteBeginPoint:(CLLocationCoordinate2D )beginPoint endPoint:(CLLocationCoordinate2D )endPoint response:(AMapRouteSearchResponse *)response{
-    
-    [self.naviRoute removeFromMapView];  //清空地图上已有的路线
-    
-    AMapGeoPoint *origin =      [AMapGeoPoint locationWithLatitude:beginPoint.latitude longitude:beginPoint.longitude]; //起点
-    AMapGeoPoint *destination = [AMapGeoPoint locationWithLatitude:endPoint.latitude longitude:endPoint.longitude];  //终点
-    
-    //根据已经规划的路径，起点，终点，规划类型，是否显示实时路况，生成显示方案
-    self.naviRoute = [MANaviRoute naviRouteForPath:response.route.paths[0] withNaviType:MANaviAnnotationTypeDrive showTraffic:NO startPoint:origin endPoint:destination];
-    self.naviRoute.anntationVisible = NO;
-    self.naviRoute.routeColor = UIColor.themeColor;
-
-    [self.naviRoute addToMapView:self.mapView];  //显示到地图上
-    
-    //缩放地图使其适应polylines的展示
-    [self.mapView setVisibleMapRect:[CommonUtility mapRectForOverlays:self.naviRoute.routePolylines]
-                        edgePadding:UIEdgeInsetsMake(kRoutePaddingEdge, kRoutePaddingEdge, kRoutePaddingEdge, kRoutePaddingEdge)
-                           animated:YES];
 }
 
 - (void)registerForKVO {
