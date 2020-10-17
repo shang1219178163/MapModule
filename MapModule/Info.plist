@@ -18,6 +18,28 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>itms-apps</string>
+        <string>iosamap</string>
+        <string>baidumap</string>
+        <string>alipay</string>
+        <string>weixin</string>
+        <string>wechat</string>
+        <string>sinaweibohd</string>
+        <string>sinaweibo</string>
+        <string>sinaweibosso</string>
+        <string>weibosdk</string>
+        <string>weibosdk2.5</string>
+        <string>weixinULAPI</string>
+        <string>alipayshare</string>
+        <string>alipays</string>
+        <string>tbopen</string>
+    </array>
+    <key>LSRequiresIPhoneOS</key>
+    <true/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

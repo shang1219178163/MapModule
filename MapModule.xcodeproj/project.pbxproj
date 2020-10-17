@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1457C24C253AB50B0038F863 /* NNPOIAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1457C24B253AB50A0038F863 /* NNPOIAnnotationView.m */; };
 		14F4109B238F5B7E0027A6CA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F4109A238F5B7E0027A6CA /* AppDelegate.m */; };
 		14F410AC238F5B7F0027A6CA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F410AB238F5B7F0027A6CA /* main.m */; };
 		14F41191238F60150027A6CA /* PulsingHaloLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F41138238F60140027A6CA /* PulsingHaloLayer.m */; };
@@ -39,7 +40,6 @@
 		14F412EB238F7A650027A6CA /* UIPOIAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412A7238F7A630027A6CA /* UIPOIAnnotationView.m */; };
 		14F412F6238F7A650027A6CA /* MAAnnotationView+Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412BF238F7A630027A6CA /* MAAnnotationView+Map.m */; };
 		14F412F7238F7A650027A6CA /* NNMapOpenHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412C0238F7A630027A6CA /* NNMapOpenHelper.m */; };
-		14F412F8238F7A650027A6CA /* NNDriverRouteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412C4238F7A630027A6CA /* NNDriverRouteView.m */; };
 		14F412F9238F7A650027A6CA /* NNDriverRouteTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412C6238F7A630027A6CA /* NNDriverRouteTipView.m */; };
 		14F412FA238F7A650027A6CA /* GuGong.tracking in Resources */ = {isa = PBXBuildFile; fileRef = 14F412C8238F7A640027A6CA /* GuGong.tracking */; };
 		14F412FB238F7A650027A6CA /* Tracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 14F412C9238F7A640027A6CA /* Tracking.m */; };
@@ -80,6 +80,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1457C24A253AB50A0038F863 /* NNPOIAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNPOIAnnotationView.h; sourceTree = "<group>"; };
+		1457C24B253AB50A0038F863 /* NNPOIAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNPOIAnnotationView.m; sourceTree = "<group>"; };
 		14F41096238F5B7E0027A6CA /* MapModule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapModule.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14F41099238F5B7E0027A6CA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		14F4109A238F5B7E0027A6CA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -146,7 +148,6 @@
 		14F412C1238F7A630027A6CA /* NNPOIAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNPOIAnnotation.h; sourceTree = "<group>"; };
 		14F412C2238F7A630027A6CA /* UIPOIAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPOIAnnotationView.h; sourceTree = "<group>"; };
 		14F412C3238F7A630027A6CA /* DriveNaviViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DriveNaviViewController.h; sourceTree = "<group>"; };
-		14F412C4238F7A630027A6CA /* NNDriverRouteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNDriverRouteView.m; sourceTree = "<group>"; };
 		14F412C5238F7A630027A6CA /* MAAnnotationView+Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MAAnnotationView+Map.h"; sourceTree = "<group>"; };
 		14F412C6238F7A630027A6CA /* NNDriverRouteTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNDriverRouteTipView.m; sourceTree = "<group>"; };
 		14F412C8238F7A640027A6CA /* GuGong.tracking */ = {isa = PBXFileReference; lastKnownFileType = file; path = GuGong.tracking; sourceTree = "<group>"; };
@@ -176,7 +177,6 @@
 		14F412E1238F7A640027A6CA /* TrackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackViewController.h; sourceTree = "<group>"; };
 		14F412E2238F7A640027A6CA /* NNMapManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNMapManager.h; sourceTree = "<group>"; };
 		14F412E3238F7A640027A6CA /* NNDriverNaviController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNDriverNaviController.m; sourceTree = "<group>"; };
-		14F412E4238F7A640027A6CA /* NNDriverRouteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNDriverRouteView.h; sourceTree = "<group>"; };
 		14F412E5238F7A640027A6CA /* NNMapManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNMapManager.m; sourceTree = "<group>"; };
 		14F412E6238F7A640027A6CA /* DriveNaviViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DriveNaviViewController.m; sourceTree = "<group>"; };
 		14F412E7238F7A640027A6CA /* NNSpeechSynthesizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNSpeechSynthesizer.m; sourceTree = "<group>"; };
@@ -254,6 +254,8 @@
 				14F4109A238F5B7E0027A6CA /* AppDelegate.m */,
 				14F41148238F60140027A6CA /* AppGlobleConfig.h */,
 				14F41190238F60150027A6CA /* AppGlobleConfig.m */,
+				14F4132C238F8F510027A6CA /* HomeViewController.h */,
+				14F41335238F8F520027A6CA /* HomeViewController.m */,
 				14F41331238F8F520027A6CA /* BNCenterViewController.h */,
 				14F41332238F8F520027A6CA /* BNCenterViewController.m */,
 				14F4132F238F8F520027A6CA /* BNFirstViewController.h */,
@@ -264,8 +266,6 @@
 				14F41333238F8F520027A6CA /* BNSecondViewController.m */,
 				14F41336238F8F520027A6CA /* BNThirdViewController.h */,
 				14F4132B238F8F510027A6CA /* BNThirdViewController.m */,
-				14F4132C238F8F510027A6CA /* HomeViewController.h */,
-				14F41335238F8F520027A6CA /* HomeViewController.m */,
 				14F412A0238F77650027A6CA /* PKMainController.h */,
 				14F4129F238F77650027A6CA /* PKMainController.m */,
 				14F41135238F60140027A6CA /* NNMapViewController.h */,
@@ -327,8 +327,6 @@
 				14F412D2238F7A640027A6CA /* NNDriverRouteController.m */,
 				14F412A5238F7A630027A6CA /* NNDriverRouteTipView.h */,
 				14F412C6238F7A630027A6CA /* NNDriverRouteTipView.m */,
-				14F412E4238F7A640027A6CA /* NNDriverRouteView.h */,
-				14F412C4238F7A630027A6CA /* NNDriverRouteView.m */,
 				14F412A6238F7A630027A6CA /* Map.xcassets */,
 				14F412D1238F7A640027A6CA /* NNMapContainView.h */,
 				14F412CF238F7A640027A6CA /* NNMapContainView.m */,
@@ -344,6 +342,8 @@
 				14F412E6238F7A640027A6CA /* DriveNaviViewController.m */,
 				14F412C5238F7A630027A6CA /* MAAnnotationView+Map.h */,
 				14F412BF238F7A630027A6CA /* MAAnnotationView+Map.m */,
+				1457C24A253AB50A0038F863 /* NNPOIAnnotationView.h */,
+				1457C24B253AB50A0038F863 /* NNPOIAnnotationView.m */,
 				14F412C7238F7A640027A6CA /* Tacking */,
 				14F412D5238F7A640027A6CA /* TackingOne */,
 				14F412C2238F7A630027A6CA /* UIPOIAnnotationView.h */,
@@ -650,7 +650,7 @@
 				14F41223238F62450027A6CA /* GlobleConst.m in Sources */,
 				14F41324238F899D0027A6CA /* ErrorInfoUtility.m in Sources */,
 				14F411BD238F60150027A6CA /* NNMapViewController.m in Sources */,
-				14F412F8238F7A650027A6CA /* NNDriverRouteView.m in Sources */,
+				1457C24C253AB50B0038F863 /* NNPOIAnnotationView.m in Sources */,
 				14F4109B238F5B7E0027A6CA /* AppDelegate.m in Sources */,
 				14F41302238F7A650027A6CA /* Util.m in Sources */,
 				14F41322238F899D0027A6CA /* CommonUtility.m in Sources */,

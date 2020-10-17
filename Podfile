@@ -5,7 +5,8 @@ inhibit_all_warnings!
 
 def common_pods
    pod 'AFNetworking’
-   
+   pod 'AESCrypt’
+
    pod 'JZLocationConverter'
     
    pod 'KVOController'
@@ -20,13 +21,12 @@ def common_pods
    
    pod 'YYCache'
    pod 'YYCategories'
-   pod 'YYWebImage’
+#   pod 'YYWebImage’
    pod 'YYModel’
 
-   
-   pod 'AMapSearch-NO-IDFA'
-   pod 'AMapLocation-NO-IDFA'
-   pod 'AMapNavi-NO-IDFA'
+   pod 'AMap3DMap'
+   pod 'AMapSearch'
+   pod 'AMapLocation'
    
    # 主模块(必须)
 #   pod 'mob_sharesdk'

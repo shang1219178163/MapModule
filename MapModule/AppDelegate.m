@@ -33,10 +33,7 @@
     
     UIViewController *controller = UICtrFromString(@"HomeViewController");
 //    controller = UICtrFromString(@"PKMainController");
-    
-    controller.view.backgroundColor = UIColor.redColor;
-    [UIApplication setupRootController:controller isAdjust:true];
-
+    [UIApplication setupRootController:controller isAdjust:NO];
     return YES;
 }
 
@@ -66,7 +63,7 @@
                           };
     if ([dic.allKeys containsObject:@(UIApplication.sharedApplication.backgroundRefreshStatus)]) {
         NSString * message = dic[@(UIApplication.sharedApplication.backgroundRefreshStatus)];
-        [UIAlertController showSheetTitle:@"" msg:message actionTitles:@[kTitleSure] handler:nil];
+        [UIAlertController showSheetTitle:@"" message:message actionTitles:@[kTitleSure] handler:nil];
         return;
     }
     
@@ -84,24 +81,24 @@
     [self.locationTracker updateLocationToServer];
 }
 
-#pragma mark - UISceneSession lifecycle
-
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_0
-- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
-    // Called when a new scene session is being created.
-    // Use this method to select a configuration to create the new scene with.
-    return [[UISceneConfiguration alloc] initWithName:@"Default Configuration" sessionRole:connectingSceneSession.role];
-}
-
-
-- (void)application:(UIApplication *)application didDiscardSceneSessions:(NSSet<UISceneSession *> *)sceneSessions {
-    // Called when the user discards a scene session.
-    // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-    // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
-}
-
-#else
-
-#endif
+//#pragma mark - UISceneSession lifecycle
+//
+//#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_0
+//- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
+//    // Called when a new scene session is being created.
+//    // Use this method to select a configuration to create the new scene with.
+//    return [[UISceneConfiguration alloc] initWithName:@"Default Configuration" sessionRole:connectingSceneSession.role];
+//}
+//
+//
+//- (void)application:(UIApplication *)application didDiscardSceneSessions:(NSSet<UISceneSession *> *)sceneSessions {
+//    // Called when the user discards a scene session.
+//    // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
+//    // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+//}
+//
+//#else
+//
+//#endif
 
 @end
