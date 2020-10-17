@@ -12,8 +12,6 @@
 
 @interface HomeViewController ()<UITabBarControllerDelegate>
 
-@property (nonatomic, strong) NSArray *btnList;
-
 @end
 
 @implementation HomeViewController
@@ -61,14 +59,6 @@
 //
 //    }];
 }
-
--(NSArray *)btnList {
-    if (!_btnList){
-        _btnList = [self getSubviewsForName:kUITabBarButton];
-    }
-    return _btnList;
-}
-
 
 
 @end

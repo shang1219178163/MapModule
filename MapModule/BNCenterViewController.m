@@ -13,6 +13,8 @@
 
 @property (nonatomic, strong) UISearchBar *searchBar;
 
+@property (nonatomic, strong) NSMutableArray *dataList;
+
 @property (nonatomic, strong) NNTablePlainView *plainView;
 
 @end
@@ -31,8 +33,7 @@
   
     }];
 
-    self.dataList = @[
-                      @[@"PKMainController", @"高德地图轨迹回溯",],
+    self.dataList = @[@[@"PKMainController", @"高德地图轨迹回溯",],
                       @[@"NNMapViewController", @"系统相关",],
                       @[@"TrackRecordsController", @"后台二十四小时定时定位",],
                       

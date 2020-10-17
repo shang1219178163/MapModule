@@ -54,7 +54,7 @@ static NSString *const kACSEncrypt = @"mbqh1Gtpj9L8pJuv";
     if (![Utilities_DM fileExistAtPath:plistPath]) {
         [Utilities_DM createDirectoryAtPath:plistPath];
     }
-    NSString *filePath = [plistPath stringByAppendingPathComponent:kPlistName_common];
+    NSString *filePath = [plistPath stringByAppendingPathComponent:@"kPlistName_common"];
 //    DDLog(@"%@\n", filePath);
 
     NSMutableDictionary  *mdict = [NSMutableDictionary dictionaryWithCapacity:0];
