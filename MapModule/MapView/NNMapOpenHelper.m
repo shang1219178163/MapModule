@@ -37,8 +37,7 @@ MKMapItem * MKMapItemFromMKPlacemark(MKPlacemark *placemark){
         [SVProgressHUD dismiss];
         MKMapItem *mappItem = MKMapItemFromMKPlacemark(MKPlacemarkFromCLPlacemark(placemarks.firstObject));
         [MKMapItem openMapsWithItems:@[currentLocation,mappItem]
-                       launchOptions:@{
-                                       MKLaunchOptionsDirectionsModeKey:   MKLaunchOptionsDirectionsModeDriving,
+                       launchOptions:@{MKLaunchOptionsDirectionsModeKey:   MKLaunchOptionsDirectionsModeDriving,
                                        MKLaunchOptionsShowsTrafficKey:   @(true),
                                        }];
         
@@ -63,9 +62,9 @@ MKMapItem * MKMapItemFromMKPlacemark(MKPlacemark *placemark){
 
 + (void)openLocationString:(NSString *)string{
 //    string = @"iosamap://navi?sourceApplication=高德地图&backScheme=&poiname=IOP嵌套测试车场&lat=34.209373&lon=108.840889&dev=0&style=0";
-    
-    NSString * result = [string stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURL * url = [NSURL URLWithString:result];
+
+    NSString *result = [string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSURL *url = [NSURL URLWithString:result];
     if ([UIApplication.sharedApplication canOpenURL:url]) {
         [UIApplication.sharedApplication openURL:url];
         
