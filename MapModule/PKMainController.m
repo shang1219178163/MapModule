@@ -8,9 +8,9 @@
 
 #import "PKMainController.h"
 
-#import "UIPOIAnnotationView.h"
-
 #import "NNDriverRouteController.h"
+#import "TrackViewController.h"
+#import "UIPOIAnnotationView.h"
 
 @interface PKMainController ()
 @property (nonatomic, strong) UIButton *locaBtn;
@@ -24,10 +24,13 @@
     // Do any additional setup after loading the view.
     self.title = @"首页OC";
     
-    [self createBarItem:@"😁" isLeft:false handler:^(id obj, UIView *item, NSInteger idx) {
+    [self createBarItem:@"轨迹" isLeft:false handler:^(id obj, UIView *item, NSInteger idx) {
         [self.navigationController pushVC:@"TrackViewController" title:@"轨迹回溯" animated:true block:^(__kindof UIViewController * _Nonnull vc) {
-                    
+
         }];
+        
+//        UIViewController *controller = [[TrackViewController alloc]init];
+//        [self.navigationController pushViewController:controller animated:true];
     }];
     
     [self.view addSubview:self.containView];
