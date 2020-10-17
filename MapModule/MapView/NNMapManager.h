@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
-#import <MAMapKit/MAMapKit.h>
+//#import <AMapNaviKit/MAMapKit.h>
 #import <AMapFoundationKit/AMapFoundationKit.h>
 #import <AMapLocationKit/AMapLocationKit.h>
 #import <AMapSearchKit/AMapSearchKit.h>
@@ -17,7 +17,10 @@
 #import "CommonUtility.h"
 #import "ErrorInfoUtility.h"
 #import "MANaviRoute.h"
+#import "NNPOIAnnotationView.h"
+#import "NNPOIAnnotation.h"
 
+NS_ASSUME_NONNULL_BEGIN
 //{纬度(-90~90),经度(-180~180)}
 
 static NSString *const kUserCoordinateInfo = @"kUserCoordinateInfo";
@@ -31,13 +34,13 @@ static NSString *const kAnnoTitleRoute = @"轨迹针";
 static NSString *const kAnnoTitleCarGreen = @"car_green";
 static NSString *const kAnnoTitleCarRed = @"car_red";
 
-/// {纬度,经度}
+/// 经度,纬度
 FOUNDATION_EXPORT NSString * NSStringFromCoordinate(CLLocationCoordinate2D coordinate);
 /// {纬度(-90~90),经度(-180~180)}转经纬度结构体
-FOUNDATION_EXPORT CLLocationCoordinate2D Coordinate2DFromString(NSString * coordinateInfo);
+FOUNDATION_EXPORT CLLocationCoordinate2D Coordinate2DFromString(NSString *coordinateInfo);
 /// 界面之间数据传递类型转换为经纬度
 FOUNDATION_EXPORT CLLocationCoordinate2D Coordinate2DFromObj(id obj);
-/// {纬度,经度}
+/// 经度,纬度
 FOUNDATION_EXPORT NSString * NSStringFromAMapGeoPoint(AMapGeoPoint *point);
 /// AMapGeoPoint
 FOUNDATION_EXPORT AMapGeoPoint * AMapGeoPointFromString(NSString *coordinateInfo);
@@ -55,10 +58,27 @@ FOUNDATION_EXPORT CLLocationCoordinate2D Coordinate2DFromNSData(NSData * data);
 FOUNDATION_EXPORT NSValue * NSValueFromCoordinate(CLLocationCoordinate2D obj);
 /// NSValue转经纬度
 FOUNDATION_EXPORT CLLocationCoordinate2D Coordinate2DFromNSValue(NSValue * value);
+
+// 百度地图经纬度 -> 高德地图经纬度
+FOUNDATION_EXPORT CLLocationCoordinate2D GaoDeCoordinate2DFromBaiDu(CLLocationCoordinate2D coordinate);
+// 高德地图经纬度 -> 百度地图经纬度
+FOUNDATION_EXPORT CLLocationCoordinate2D BaiDuCoordinate2DFromGaoDe(CLLocationCoordinate2D coordinate);
+    
+/// 路线长度信息描述
+FOUNDATION_EXPORT NSString *DistanceInfoFromMeter(NSInteger distance);
 /// 路线长度信息描述
 FOUNDATION_EXPORT NSString * DistanceInfoFromAMapRoute(AMapRoute *route);
-/// 经纬度转屏幕坐标, 调用着负责释放内存
-FOUNDATION_EXPORT CGPoint *MapPointsForParam(CLLocationCoordinate2D *coords, NSUInteger count, MAMapView *mapView);
+/// 获取两点经纬度之间直线/投影的距离
+FOUNDATION_EXPORT CLLocationDistance DistanceFromTwoPoint(CLLocationCoordinate2D a, CLLocationCoordinate2D b);
+/// 获取两点经纬度之间直线/投影的距离描述
+FOUNDATION_EXPORT NSString * DistanceInfoFromTwoPoint(CLLocationCoordinate2D a, CLLocationCoordinate2D b);
+/// 获取地图中心点和最长半径的距离
+FOUNDATION_EXPORT CLLocationDistance DistanceFromMapCenterAndMaxEdg(MAMapView *mapView);
+/// 获取地图中心点和最长半径的距离描述
+FOUNDATION_EXPORT NSString * DistanceInfoFromMapCenterAndMaxEdgDes(MAMapView *mapView);
+
+/// 经纬度转屏幕坐标, 调用者负责释放内存
+FOUNDATION_EXPORT CGPoint *_Nullable MapPointsForParam(CLLocationCoordinate2D *coords, NSUInteger count, MAMapView *mapView);
 /// 构建path, 调用着负责释放内存
 FOUNDATION_EXPORT CGMutablePathRef MapPathForParam(CGPoint *points, NSUInteger count);
 /// 多段MAPolyline
@@ -69,20 +89,26 @@ FOUNDATION_EXPORT NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path);
 //FOUNDATION_EXPORT CLLocationCoordinate2D *MapCoordinatesForParam(NSArray<NSString *> *stepCoords);
 
 
-typedef MAAnnotationView* (^ViewForAnnotationHandler)(MAMapView *mapView, id<MAAnnotation>annotation);
-typedef MAOverlayRenderer* (^RendererForOverlay)(MAMapView *mapView, id <MAOverlay>overlay);
-typedef void (^MapSelectViewHandler)(MAMapView * mapView, MAAnnotationView * view, BOOL didSelect);
+typedef MAAnnotationView* _Nullable (^ViewForAnnotationHandler)(MAMapView *mapView, id<MAAnnotation>annotation);
+typedef MAOverlayRenderer* _Nullable (^RendererForOverlay)(MAMapView *mapView, id <MAOverlay>overlay);
+typedef void (^MapSelectAnnotationViewHandler)(MAMapView *mapView, MAAnnotationView *view, BOOL didSelect);
 
-typedef void (^MapDidUpdateUserHandler)(MAMapView *mapView, MAUserLocation *userLocation, BOOL updatingLocation, NSError *error);
-typedef void (^MapLocationHandler)(CLLocation *location, AMapLocationReGeocode *regeocode, AMapLocationManager *manager, NSError *error);
-typedef void (^MapReGeocodeSearchHandler)(AMapReGeocodeSearchRequest *request, AMapReGeocodeSearchResponse *response, NSError *error);
-typedef void (^MapGeocodeSearchHandler)(AMapGeocodeSearchRequest *request,  AMapGeocodeSearchResponse *response, NSError *error);
-typedef void (^MapPOISearchHandler)(AMapPOISearchBaseRequest *request, AMapPOISearchResponse *response, NSError *error);
-typedef void (^MapInputTipsHandler)(AMapInputTipsSearchRequest *request, AMapInputTipsSearchResponse *response, NSError *error);
+typedef void (^MapDidUpdateUserHandler)(MAMapView *mapView, MAUserLocation *userLocation, BOOL updatingLocation, NSError *_Nullable error);
+typedef void (^MapRegionDidChangeHandler)(MAMapView * mapView, BOOL animated, BOOL wasUserAction);
 
-typedef void (^MapRouteHandler)(AMapRouteSearchBaseRequest *request, AMapRouteSearchResponse *response, NSError *error);
+typedef void (^MapSingleTappedHandler)(MAMapView * mapView, CLLocationCoordinate2D coordinate);
+
+typedef void (^MapLocationHandler)(CLLocation *_Nullable location, AMapLocationReGeocode *_Nullable regeocode, AMapLocationManager *_Nullable manager, NSError *_Nullable error);
+typedef void (^MapReGeocodeSearchHandler)(AMapReGeocodeSearchRequest *request, AMapReGeocodeSearchResponse *_Nullable response, NSError *_Nullable error);
+typedef void (^MapGeocodeSearchHandler)(AMapGeocodeSearchRequest *request,  AMapGeocodeSearchResponse *_Nullable response, NSError *_Nullable error);
+typedef void (^MapPOISearchHandler)(AMapPOISearchBaseRequest *request, AMapPOISearchResponse *_Nullable response, NSError *_Nullable error);
+typedef void (^MapInputTipsHandler)(AMapInputTipsSearchRequest *request, AMapInputTipsSearchResponse *_Nullable response, NSError *_Nullable error);
+
+typedef void (^MapRouteHandler)(AMapRouteSearchBaseRequest *request, AMapRouteSearchResponse *_Nullable response, NSError *_Nullable error);
 /// 地理围栏
-typedef void (^MapGeoFenceHandler)(AMapGeoFenceManager *manager, NSArray <AMapGeoFenceRegion *> *regions, NSString *customID, NSError *error);
+typedef void (^MapGeoFenceHandler)(AMapGeoFenceManager *manager, NSArray <AMapGeoFenceRegion *> *regions, NSString *customID, NSError *_Nullable error);
+///定制
+typedef void (^ViewForPOIAnnotationHandler)(MAMapView *mapView, NNPOIAnnotationView *annotationView, NNPOIAnnotation *annotation);
 
 @class MapLocationInfoModel;
 @interface NNMapManager : NSObject<MAMapViewDelegate, AMapSearchDelegate, AMapLocationManagerDelegate, AMapGeoFenceManagerDelegate>
@@ -98,13 +124,16 @@ typedef void (^MapGeoFenceHandler)(AMapGeoFenceManager *manager, NSArray <AMapGe
 @property (nonatomic, strong) MAAnnotationView *userLocationView;
 @property (nonatomic, strong) UIButton *locaBtn;
 
+@property (nonatomic, assign) MANaviAnnotationType naviRouteType;
+
 @property (nonatomic, copy) ViewForAnnotationHandler viewForAnnotationHandler;
 @property (nonatomic, copy) RendererForOverlay RendererForOverlayHandler;
-@property (nonatomic, copy) MapSelectViewHandler selectHandler;
-
 
 /**mapView: didUpdateUserLocation: updatingLocation:*/
 @property (nonatomic, copy) MapDidUpdateUserHandler didUpdateUserHandler;
+/**mapView: regionDidChangeAnimated: wasUserAction:*/
+@property (nonatomic, copy) MapRegionDidChangeHandler regionDidChangeHandler;
+@property (nonatomic, copy) MapSelectAnnotationViewHandler selectAnnotationViewHandler;
 
 /** amapLocationManager:didUpdateLocation: reGeocode:*/
 @property (nonatomic, copy) MapLocationHandler locationHandler;
@@ -115,7 +144,7 @@ typedef void (^MapGeoFenceHandler)(AMapGeoFenceManager *manager, NSArray <AMapGe
 @property (nonatomic, copy) MapRouteHandler routeHandler;
 @property (nonatomic, copy) MapGeoFenceHandler geoFenceHandler;
 
-@property (nonatomic, strong) NSDictionary * annViewDict;//起点终点信息
+@property (nonatomic, strong) NSDictionary *annViewDict;//起点终点信息
 
 /** 是否有经纬度*/
 @property (nonatomic, assign) BOOL hasLocation;
@@ -156,36 +185,58 @@ typedef void (^MapGeoFenceHandler)(AMapGeoFenceManager *manager, NSArray <AMapGe
 /**
  开始周边搜索🔍
  */
-- (void)aroundSearchCoordinate:(CLLocationCoordinate2D)coordinate keywords:(NSString *)keywords pageIndex:(NSInteger)pageIndex handler:(MapPOISearchHandler)handler;
+- (void)aroundSearchCoordinate:(CLLocationCoordinate2D)coordinate
+                         block:(void(^_Nullable)(AMapPOIAroundSearchRequest *request))block
+                       handler:(MapPOISearchHandler)handler;
 
 /**
  逆地理编码请求
  */
-- (void)reGeocodeSearchWithRequest:(AMapReGeocodeSearchRequest *)request handler:(MapReGeocodeSearchHandler)handler;
-
+- (void)reGeocodeSearchWithBlock:(void(^_Nullable)(AMapReGeocodeSearchRequest *request))block
+                         handler:(MapReGeocodeSearchHandler)handler;
 /**
  地理编码请求
  */
-- (void)geocodeSearchWithAddress:(NSString *)address city:(NSString *)city handler:(MapGeocodeSearchHandler)handler;
+- (void)geocodeSearchWithBlock:(void(^_Nullable)(AMapGeocodeSearchRequest *request))block
+                       handler:(MapGeocodeSearchHandler)handler;
 
 /**
  关键字搜索
  
  @param keywords 搜索关键字 必传参数
- @param city 搜索城市
- @param page 搜索页数
  */
-- (void)keywordsSearchWithKeywords:(NSString *)keywords city:(NSString *)city page:(NSInteger)page coordinate:(CLLocationCoordinate2D )coordinate handler:(MapPOISearchHandler)handler;
+- (void)keywordsSearchWithKeywords:(NSString *)keywords
+                              city:(NSString *)city
+                              page:(NSInteger)page
+                             block:(void(^_Nullable)(AMapPOIKeywordsSearchRequest *request))block
+                           handler:(MapPOISearchHandler)handler;
 /**
  提示搜索
  */
-- (void)tipsSearchWithKeywords:(NSString *)key city:(NSString *)city handler:(MapInputTipsHandler)handler;
+- (void)tipsSearchWithKeywords:(NSString *)keywords
+                          city:(NSString *)city
+                         block:(void(^_Nullable)(AMapInputTipsSearchRequest *request))block
+                       handler:(MapPOISearchHandler)handler;
 
 /**
  路径搜索
  */
-- (void)routeSearchStartPoint:(CLLocationCoordinate2D)startPoint endPoint:(CLLocationCoordinate2D)endPoint strategy:(NSInteger)strategy type:(NSString *)type handler:(MapRouteHandler)handler;
+///驾车路线
+- (void)searchRoutePlanningDriveStartPoint:(CLLocationCoordinate2D)startPoint endPoint:(CLLocationCoordinate2D)endPoint strategy:(NSInteger)strategy handler:(MapRouteHandler)handler;
+///步行路线
+- (void)searchRoutePlanningWalkStartPoint:(CLLocationCoordinate2D)startPoint endPoint:(CLLocationCoordinate2D)endPoint handler:(MapRouteHandler)handler;
+///公交路线
+- (void)searchRoutePlanningBusStartPoint:(CLLocationCoordinate2D)startPoint endPoint:(CLLocationCoordinate2D)endPoint strategy:(NSInteger)strategy city:(NSString *)city handler:(MapRouteHandler)handler;
+///骑行路线
+- (void)searchRoutePlanningRidingStartPoint:(CLLocationCoordinate2D)startPoint endPoint:(CLLocationCoordinate2D)endPoint strategy:(NSInteger)strategy city:(NSString *)city handler:(MapRouteHandler)handler;
+///货车路线
+- (void)searchRoutePlanningTruckStartPoint:(CLLocationCoordinate2D)startPoint endPoint:(CLLocationCoordinate2D)endPoint strategy:(NSInteger)strategy handler:(MapRouteHandler)handler;
+///路线搜索并绘制到地图
+- (void)routePlanningDriveStartPoint:(CLLocationCoordinate2D)startPoint endPoint:(CLLocationCoordinate2D)endPoint strategy:(NSInteger)strategy mapView:(MAMapView *)mapView handler:(MapRouteHandler)handler;
+///绘制路线到地图
+- (void)presentRouteStartPoint:(CLLocationCoordinate2D )startPoint endPoint:(CLLocationCoordinate2D )endPoint response:(AMapRouteSearchResponse *)response mapView:(MAMapView *)mapView type:(MANaviAnnotationType)type;
 
+    
 - (void)geoFenceAddCircleRegionWithCenter:(CLLocationCoordinate2D)center radius:(CLLocationDistance)radius customID:(NSString *)customID handler:(MapGeoFenceHandler)handler;
 
 - (void)geoFenceAddPolygonRegionWithCoordinates:(CLLocationCoordinate2D *)coordinates count:(NSInteger)count customID:(NSString *)customID handler:(MapGeoFenceHandler)handler;
@@ -196,13 +247,6 @@ typedef void (^MapGeoFenceHandler)(AMapGeoFenceManager *manager, NSArray <AMapGe
 
 - (void)geoFenceAddDistrictRegionForMonitoringWithDistrictName:(NSString *)districtName customID:(NSString *)customID handler:(MapGeoFenceHandler)handler;
 
-/**
- 两点之间直线/投影距离
- 
- @param type 0返回米.1返回公里
- @return 返回值
- */
-+ (NSString *)distanceWithStart:(CLLocationCoordinate2D )startPoint end:(CLLocationCoordinate2D )endPoint type:(NSString *)type mapView:(MAMapView *)mapView;
 
 /**
  获取指定title的针
@@ -228,3 +272,6 @@ typedef void (^MapGeoFenceHandler)(AMapGeoFenceManager *manager, NSArray <AMapGe
 @property (nonatomic, strong) AMapPOISearchResponse *poiSearchResponse;
 
 @end
+
+
+NS_ASSUME_NONNULL_END

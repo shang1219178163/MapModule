@@ -9,7 +9,7 @@
 #import "NNMapManager.h"
 
 NSString * NSStringFromCoordinate(CLLocationCoordinate2D coordinate) {
-    NSString * string = [NSString stringWithFormat:@"{%.8f,%.8f}",coordinate.latitude,coordinate.longitude];
+    NSString *string = [NSString stringWithFormat:@"%.8f,%.8f",coordinate.longitude, coordinate.latitude];
     return string;
 }
 
@@ -43,7 +43,7 @@ CLLocationCoordinate2D Coordinate2DFromObj(id obj) {
 }
 
 NSString * NSStringFromAMapGeoPoint(AMapGeoPoint *point) {
-    NSString * string = [NSString stringWithFormat:@"{%.8f,%.8f}",point.latitude,point.longitude];
+    NSString *string = [NSString stringWithFormat:@"%.8f,%.8f", point.longitude, point.latitude];
     return string;
 }
 
@@ -90,23 +90,66 @@ NSValue * NSValueFromCoordinate(CLLocationCoordinate2D obj){
     NSValue *value = [NSValue valueWithBytes:&obj objCType:@encode(typeof(obj))];
     return value;
 }
-
-CLLocationCoordinate2D Coordinate2DFromNSValue(NSValue * value){
-    CLLocationCoordinate2D coordinate;
-    [value getValue:&coordinate];
-    return coordinate;
+// 百度地图经纬度 -> 高德地图经纬度
+CLLocationCoordinate2D GaoDeCoordinate2DFromBaiDu(CLLocationCoordinate2D coordinate){
+    return CLLocationCoordinate2DMake(coordinate.latitude - 0.006, coordinate.longitude - 0.0065);
+}
+// 高德地图经纬度 -> 百度地图经纬度
+CLLocationCoordinate2D BaiDuCoordinate2DFromGaoDe(CLLocationCoordinate2D coordinate){
+    return CLLocationCoordinate2DMake(coordinate.latitude + 0.006, coordinate.longitude + 0.0065);
 }
 
-NSString * DistanceInfoFromAMapRoute(AMapRoute *route) {
-    NSString * distanceInfo = @"0.0m";
-    NSInteger distance = route.paths.firstObject.distance;
+NSString *DistanceInfoFromMeter(NSInteger distance) {
+    NSString *result = @"0.0m";
     if (distance < 1000) {
-        distanceInfo = [NSString stringWithFormat:@" %@%@", @(distance), @"m"];
+        result = [NSString stringWithFormat:@" %@%@", @(distance), @"m"];
     } else {
-        distanceInfo = [NSString stringWithFormat:@" %@%@", @(distance/1000), @"km"];
+        result = [NSString stringWithFormat:@" %@%@", @(distance/1000), @"km"];
     }
-    DDLog(@"距离_%@_",distanceInfo);
-    return distanceInfo;
+//    DDLog(@"距离_%@_", result);
+    return result;
+}
+
+NSString *DistanceInfoFromAMapRoute(AMapRoute *route) {
+    return DistanceInfoFromMeter(route.paths.firstObject.distance);
+}
+
+CLLocationDistance DistanceFromTwoPoint(CLLocationCoordinate2D a, CLLocationCoordinate2D b) {
+    MAMapPoint start = MAMapPointForCoordinate(a);
+    MAMapPoint end = MAMapPointForCoordinate(b);
+    
+    CLLocationDistance distance = MAMetersBetweenMapPoints(start, end);
+    return distance;
+}
+
+NSString * DistanceInfoFromTwoPoint(CLLocationCoordinate2D a, CLLocationCoordinate2D b) {
+    if (!CLLocationCoordinate2DIsValid(a) || !CLLocationCoordinate2DIsValid(b)) {
+        return @"--";
+    }
+    CLLocationDistance distance = DistanceFromTwoPoint(a, b);
+    return DistanceInfoFromMeter(distance);
+}
+
+CLLocationDistance DistanceFromMapCenterAndMaxEdg(MAMapView *mapView) {
+    CGPoint point = CGPointMake(0, CGRectGetHeight(mapView.bounds)*0.5);
+    if (CGRectGetWidth(mapView.bounds) > CGRectGetHeight(mapView.bounds))  {
+        point = CGPointMake(CGRectGetWidth(mapView.bounds)*0.5, 0);
+    }
+    
+    CLLocationCoordinate2D coordinate = [mapView convertPoint:point toCoordinateFromView:mapView.superview];
+    CLLocationCoordinate2D coordinate1 = mapView.centerCoordinate;
+    return DistanceFromTwoPoint(coordinate, coordinate1);
+}
+
+NSString * DistanceInfoFromMapCenterAndMaxEdgDes(MAMapView *mapView) {
+    CGPoint point = CGPointMake(0, CGRectGetHeight(mapView.bounds)*0.5);
+    if (CGRectGetWidth(mapView.bounds) > CGRectGetHeight(mapView.bounds))  {
+        point = CGPointMake(CGRectGetWidth(mapView.bounds)*0.5, 0);
+    }
+    
+    CLLocationCoordinate2D coordinate = [mapView convertPoint:point toCoordinateFromView:mapView.superview];
+    CLLocationCoordinate2D coordinate1 = mapView.centerCoordinate;
+    return DistanceInfoFromTwoPoint(coordinate, coordinate1);
 }
 
 CGPoint *MapPointsForParam(CLLocationCoordinate2D *coords, NSUInteger count, MAMapView *mapView){
@@ -193,13 +236,13 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
 @property (nonatomic, assign) CLLocationCoordinate2D userCoordinate;
 
 @property (nonatomic, strong) AMapGeocodeSearchRequest *geocodeRequest;
-@property (nonatomic, strong) AMapPOIAroundSearchRequest *poiAroundRequest;
-@property (nonatomic, strong) AMapPOIKeywordsSearchRequest *poiKeywordsRequest;
-@property (nonatomic, strong) AMapInputTipsSearchRequest *inputTipsRequest;
-@property (nonatomic, strong) AMapDrivingRouteSearchRequest *drivingRequest;
+//@property (nonatomic, strong) AMapPOIAroundSearchRequest *poiAroundRequest;
+//@property (nonatomic, strong) AMapPOIKeywordsSearchRequest *poiKeywordsRequest;
+//@property (nonatomic, strong) AMapInputTipsSearchRequest *inputTipsRequest;
+//@property (nonatomic, strong) AMapDrivingRouteSearchRequest *drivingRequest;
 
-@property (nonatomic, strong) MapLocationInfoModel * locationModel;
-@property (nonatomic, strong) MANaviRoute * naviRoute;
+@property (nonatomic, strong) MapLocationInfoModel *locationModel;
+@property (nonatomic, strong) MANaviRoute *naviRoute;
 
 @end
 
@@ -220,8 +263,8 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
     mapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     mapView.desiredAccuracy = kCLLocationAccuracyHundredMeters;
     mapView.distanceFilter = kCLLocationAccuracyKilometer;
-    //        mapView.headingFilter  = 90;
-    mapView.zoomLevel = 16;
+//    mapView.headingFilter  = 90;
+//    mapView.zoomLevel = 15;
     //自定义定位经度圈样式
     mapView.customizeUserLocationAccuracyCircleRepresentation = YES;
     ///如果您需要进入地图就显示定位小蓝点，则需要下面两行代码
@@ -241,7 +284,8 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
 +(UIButton *)createDefaultLocaBtn{
     UIButton * view = [UIButton buttonWithType:UIButtonTypeCustom];
     view.frame = CGRectMake(0, 0, 40, 40);
-    [view setBackgroundImage:UIImageNamed(@"icon_location") forState:UIControlStateNormal];
+    [view setBackgroundImage:[UIImage imageNamed:@"icon_location"] forState:UIControlStateNormal];
+    view.adjustsImageWhenHighlighted = false;
     return view;
 }
 
@@ -254,9 +298,8 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
         //iOS 9（不包含iOS 9） 之前设置允许后台定位参数，保持不会被系统挂起
     locationManager.pausesLocationUpdatesAutomatically = NO;
     
-    if (iOSVer(9)) {
+    if (@available(iOS 19.0, *)) {
         locationManager.allowsBackgroundLocationUpdates = NO;
-            
     }
     locationManager.locatingWithReGeocode = YES;//返回地理信息
     return locationManager;
@@ -307,11 +350,11 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
         return ;
     }
     self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
-    self.locationManager.locationTimeout = 2;
-    self.locationManager.reGeocodeTimeout = 2;
+    self.locationManager.locationTimeout = 10;
+    self.locationManager.reGeocodeTimeout = 10;
     // 带逆地理（返回坐标和地址信息）。将下面代码中的 YES 改成 NO ，则不会返回地址信息。
     @weakify(self);
-    [self.locationManager requestLocationWithReGeocode:reGeocode completionBlock:^(CLLocation *location, AMapLocationReGeocode *regeocode, NSError *error) {
+    BOOL result = [self.locationManager requestLocationWithReGeocode:reGeocode completionBlock:^(CLLocation *location, AMapLocationReGeocode *regeocode, NSError *error) {
         @strongify(self);
         if (self.locationHandler) self.locationHandler(location, regeocode, nil, error);
         
@@ -389,7 +432,9 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
         return YES;
     } else {
         DDLog(@"请打开定位权限!");
-        [self showAlertWithTitle:@"请打开定位权限!" msg:nil blockAction:nil];
+//        [UIAlertController showAlert:@"请打开定位权限!" message:nil alignment:NSTextAlignmentCenter actionTitles:@[@"知道了"] handler:^(UIAlertController * alertVC, UIAlertAction * action) {
+//
+//        }];
         return NO;
     }
 }
@@ -399,78 +444,172 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
 }
 
 ///逆地理编码请求
-- (void)reGeocodeSearchWithRequest:(AMapReGeocodeSearchRequest *)request handler:(MapReGeocodeSearchHandler)handler{
+- (void)reGeocodeSearchWithBlock:(void(^)(AMapReGeocodeSearchRequest *request))block handler:(MapReGeocodeSearchHandler)handler{
     self.reGeocodeSearchHandler = handler;
     //
+    AMapReGeocodeSearchRequest *request = [[AMapReGeocodeSearchRequest alloc]init];
+    if (block) block(request);
     [self.searchAPI AMapReGoecodeSearch:request];
 }
+
 ///地理编码请求
-- (void)geocodeSearchWithAddress:(NSString *)address city:(NSString *)city handler:(MapGeocodeSearchHandler)handler{
+- (void)geocodeSearchWithBlock:(void(^)(AMapGeocodeSearchRequest *request))block handler:(MapGeocodeSearchHandler)handler{
     self.geocodeSearchHandler = handler;
     //
-    self.geocodeRequest.address = address;
-    self.geocodeRequest.city = city;
-    [self.searchAPI AMapGeocodeSearch:self.geocodeRequest];
-    
+    AMapGeocodeSearchRequest *request = [[AMapGeocodeSearchRequest alloc]init];
+    if (block) block(request);
+    [self.searchAPI AMapGeocodeSearch:request];
 }
 
 #pragma mark - 周边搜索
 
-- (void)aroundSearchCoordinate:(CLLocationCoordinate2D)coordinate keywords:(NSString *)keywords pageIndex:(NSInteger)pageIndex handler:(MapPOISearchHandler)handler {
+- (void)aroundSearchCoordinate:(CLLocationCoordinate2D)coordinate block:(void(^)(AMapPOIAroundSearchRequest *request))block handler:(MapPOISearchHandler)handler {
     self.POISearchHandler = handler;
     //
-    self.poiAroundRequest.location          = AMapGeoPointFromCoordinate(coordinate);
-    self.poiAroundRequest.keywords          = keywords;
-    /* 按照距离排序. */
-    self.poiAroundRequest.sortrule          = 0;
-    self.poiAroundRequest.requireExtension  = YES;
-    self.poiAroundRequest.page              = pageIndex;
+    AMapPOIAroundSearchRequest *request = [[AMapPOIAroundSearchRequest alloc]init];
     
-    [self.searchAPI AMapPOIAroundSearch:self.poiAroundRequest];
+    request.location          = AMapGeoPointFromCoordinate(coordinate);
+//    request.keywords          = keywords;
+    /* 按照距离排序. */
+    request.sortrule          = 0;
+    request.requireExtension  = YES;
+    request.page              = 30;
+    if (block) block(request);
+    [self.searchAPI AMapPOIAroundSearch:request];
 }
 
 #pragma mark - 关键字搜索
-- (void)keywordsSearchWithKeywords:(NSString *)keywords city:(NSString *)city page:(NSInteger)page coordinate:(CLLocationCoordinate2D )coordinate handler:(MapPOISearchHandler)handler{
+- (void)keywordsSearchWithKeywords:(NSString *)keywords
+                              city:(NSString *)city
+                              page:(NSInteger)page
+                             block:(void(^)(AMapPOIKeywordsSearchRequest *request))block
+                           handler:(MapPOISearchHandler)handler{
     self.POISearchHandler = handler;
-    //
-    self.poiKeywordsRequest.keywords            = keywords;
-    self.poiKeywordsRequest.city                = city;
-    //    request.types               = @"高等院校";
-    self.poiKeywordsRequest.requireExtension    = YES;
-    
-    /*  搜索SDK 3.2.0 中新增加的功能，只搜索本城市的POI。*/
-    self.poiKeywordsRequest.cityLimit           = YES;
-    //    request.requireSubPOIs      = YES;
-    self.poiKeywordsRequest.page = page;
-    self.poiKeywordsRequest.offset = 20;
-    //    self.POIKeywordsRequest.location = [AMapGeoPoint locationWithLatitude:coordinate.latitude longitude:coordinate.longitude];
-    self.poiKeywordsRequest.location = AMapGeoPointFromCoordinate(coordinate);
-    
-    [self.searchAPI AMapPOIKeywordsSearch:self.poiKeywordsRequest];
+
+    AMapPOIKeywordsSearchRequest *request = [[AMapPOIKeywordsSearchRequest alloc]init];
+    request.keywords            = keywords;
+    request.city                = city;
+    request.cityLimit           = YES;
+    request.requireExtension    = YES;
+//    request.types               = @"高等院校";
+//    request.requireSubPOIs      = YES;
+    request.page                = page;
+    request.offset              = 30;
+    if (block) block(request);
+    [self.searchAPI AMapPOIKeywordsSearch:request];
 }
 
 #pragma mark - 提示搜索
-- (void)tipsSearchWithKeywords:(NSString *)key city:(NSString *)city handler:(MapInputTipsHandler)handler{
+- (void)tipsSearchWithKeywords:(NSString *)keywords
+                              city:(NSString *)city
+                             block:(void(^)(AMapInputTipsSearchRequest *request))block
+                           handler:(MapInputTipsHandler)handler{
     self.tipsHandler = handler;
-    //
-    self.inputTipsRequest.keywords  = key;
-    self.inputTipsRequest.city      = city;
-    self.inputTipsRequest.cityLimit = YES;
-    [self.searchAPI AMapInputTipsSearch:self.inputTipsRequest];
+    
+    AMapInputTipsSearchRequest *request = [[AMapInputTipsSearchRequest alloc]init];
+    request.keywords            = keywords;
+    request.city                = city;
+    request.cityLimit           = YES;
+    if (block) block(request);
+    [self.searchAPI AMapInputTipsSearch:request];
 }
 
-- (void)routeSearchStartPoint:(CLLocationCoordinate2D)startPoint endPoint:(CLLocationCoordinate2D)endPoint strategy:(NSInteger)strategy type:(NSString *)type handler:(MapRouteHandler)handler{
+#pragma mark -驾车路线
+- (void)searchRoutePlanningDriveStartPoint:(CLLocationCoordinate2D)startPoint
+                                  endPoint:(CLLocationCoordinate2D)endPoint
+                                  strategy:(NSInteger)strategy
+                                   handler:(MapRouteHandler)handler{
     self.routeHandler = handler;
-    //
-    self.drivingRequest.requireExtension = YES;
-    self.drivingRequest.strategy = strategy ;
-    /* 出发点. */
-    self.drivingRequest.origin = AMapGeoPointFromCoordinate(startPoint);
-    /* 目的地. */
-    self.drivingRequest.destination = AMapGeoPointFromCoordinate(endPoint);
-    [self.searchAPI AMapDrivingRouteSearch:self.drivingRequest];
-    
+        
+    AMapDrivingRouteSearchRequest * request = [[AMapDrivingRouteSearchRequest alloc]init];
+    request.origin = AMapGeoPointFromCoordinate(startPoint);
+    request.destination = AMapGeoPointFromCoordinate(endPoint);
+    request.requireExtension = YES;
+    request.strategy = strategy;
+    [self.searchAPI AMapDrivingRouteSearch:request];
 }
+#pragma mark -步行路线
+- (void)searchRoutePlanningWalkStartPoint:(CLLocationCoordinate2D)startPoint
+                                 endPoint:(CLLocationCoordinate2D)endPoint
+                                  handler:(MapRouteHandler)handler{
+    self.routeHandler = handler;
+        
+    AMapWalkingRouteSearchRequest * request = [[AMapWalkingRouteSearchRequest alloc]init];
+    request.origin = AMapGeoPointFromCoordinate(startPoint);
+    request.destination = AMapGeoPointFromCoordinate(endPoint);
+    [self.searchAPI AMapWalkingRouteSearch:request];
+}
+#pragma mark -公交路线
+- (void)searchRoutePlanningBusStartPoint:(CLLocationCoordinate2D)startPoint
+                                endPoint:(CLLocationCoordinate2D)endPoint
+                                strategy:(NSInteger)strategy
+                                    city:(NSString *)city
+                                 handler:(MapRouteHandler)handler{
+    self.routeHandler = handler;
+        
+    AMapTransitRouteSearchRequest * request = [[AMapTransitRouteSearchRequest alloc]init];
+    request.origin = AMapGeoPointFromCoordinate(startPoint);
+    request.destination = AMapGeoPointFromCoordinate(endPoint);
+    request.requireExtension = true;
+    request.city = city;
+    [self.searchAPI AMapTransitRouteSearch:request];
+}
+#pragma mark -骑行路线
+- (void)searchRoutePlanningRidingStartPoint:(CLLocationCoordinate2D)startPoint
+                                   endPoint:(CLLocationCoordinate2D)endPoint
+                                   strategy:(NSInteger)strategy
+                                       city:(NSString *)city
+                                    handler:(MapRouteHandler)handler{
+    self.routeHandler = handler;
+        
+    AMapRidingRouteSearchRequest * request = [[AMapRidingRouteSearchRequest alloc]init];
+    request.origin = AMapGeoPointFromCoordinate(startPoint);
+    request.destination = AMapGeoPointFromCoordinate(endPoint);
+    [self.searchAPI AMapRidingRouteSearch:request];
+}
+#pragma mark -货车路线
+- (void)searchRoutePlanningTruckStartPoint:(CLLocationCoordinate2D)startPoint
+                                  endPoint:(CLLocationCoordinate2D)endPoint
+                                  strategy:(NSInteger)strategy
+                                   handler:(MapRouteHandler)handler{
+    self.routeHandler = handler;
+        
+    AMapTruckRouteSearchRequest * request = [[AMapTruckRouteSearchRequest alloc]init];
+    request.origin = AMapGeoPointFromCoordinate(startPoint);
+    request.destination = AMapGeoPointFromCoordinate(endPoint);
+    [self.searchAPI AMapTruckRouteSearch:request];
+}
+
+- (void)routePlanningDriveStartPoint:(CLLocationCoordinate2D)startPoint
+                            endPoint:(CLLocationCoordinate2D)endPoint
+                            strategy:(NSInteger)strategy
+                             mapView:(MAMapView *)mapView
+                             handler:(MapRouteHandler)handler{
+
+    if (startPoint.latitude == 0 || endPoint.latitude == 0) {
+        DDLog(@"起止点经纬度错误");
+        return;
+    }
+    
+    [self searchRoutePlanningDriveStartPoint:startPoint
+                                    endPoint:endPoint
+                                    strategy:0
+                                     handler:^(AMapRouteSearchBaseRequest * _Nonnull request, AMapRouteSearchResponse * _Nonnull response, NSError * _Nullable error) {
+        if (handler) {
+            handler(request, response, error);
+        }
+        if (error) {
+            DDLog(@"错误:%@", error.domain);
+            return;
+        }
+        [self presentRouteStartPoint:startPoint
+                            endPoint:endPoint
+                            response:response
+                             mapView:mapView
+                                type:MANaviAnnotationTypeDrive];
+    }];
+}
+
 
 #pragma mark - 地理围栏
 
@@ -480,10 +619,15 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
  * @param radius 围栏的半径，单位：米，要求大于0
  * @param customID 用户自定义ID，可选，SDK原值返回
  */
-- (void)geoFenceAddCircleRegionWithCenter:(CLLocationCoordinate2D)center radius:(CLLocationDistance)radius customID:(NSString *)customID handler:(MapGeoFenceHandler)handler{
+- (void)geoFenceAddCircleRegionWithCenter:(CLLocationCoordinate2D)center
+                                   radius:(CLLocationDistance)radius
+                                 customID:(NSString *)customID
+                                  handler:(MapGeoFenceHandler)handler{
     self.geoFenceHandler = handler;
-    [self.geoFenceManager addCircleRegionForMonitoringWithCenter:center radius:radius customID:customID];
     
+    [self.geoFenceManager addCircleRegionForMonitoringWithCenter:center
+                                                          radius:radius
+                                                        customID:customID];
 }
 
 /**
@@ -492,10 +636,15 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
  * @param count 经纬度坐标点的个数，不可小于3个
  * @param customID 用户自定义ID，可选，SDK原值返回
  */
-- (void)geoFenceAddPolygonRegionWithCoordinates:(CLLocationCoordinate2D *)coordinates count:(NSInteger)count customID:(NSString *)customID handler:(MapGeoFenceHandler)handler{
+- (void)geoFenceAddPolygonRegionWithCoordinates:(CLLocationCoordinate2D *)coordinates
+                                          count:(NSInteger)count
+                                       customID:(NSString *)customID
+                                        handler:(MapGeoFenceHandler)handler{
     self.geoFenceHandler = handler;
-    [self.geoFenceManager addPolygonRegionForMonitoringWithCoordinates:coordinates count:count customID:customID];
     
+    [self.geoFenceManager addPolygonRegionForMonitoringWithCoordinates:coordinates
+                                                                 count:count
+                                                              customID:customID];
 }
 
 /**
@@ -506,10 +655,18 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
  * @param size 要查询的数据的条数，(0,25]，传入<=0的值为10，传入大于25的值为25，默认10
  * @param customID 用户自定义ID，可选，SDK原值返回
  */
-- (void)geoFenceAddKeywordPOIRegionForMonitoringWithKeyword:(NSString *)keyword POIType:(NSString *)type city:(NSString *)city size:(NSInteger)size customID:(NSString *)customID handler:(MapGeoFenceHandler)handler{
+- (void)geoFenceAddKeywordPOIRegionForMonitoringWithKeyword:(NSString *)keyword
+                                                    POIType:(NSString *)type
+                                                       city:(NSString *)city
+                                                       size:(NSInteger)size
+                                                   customID:(NSString *)customID handler:(MapGeoFenceHandler)handler{
     self.geoFenceHandler = handler;
-    [self.geoFenceManager addKeywordPOIRegionForMonitoringWithKeyword:keyword POIType:type city:city size:size customID:customID];
     
+    [self.geoFenceManager addKeywordPOIRegionForMonitoringWithKeyword:keyword
+                                                              POIType:type
+                                                                 city:city
+                                                                 size:size
+                                                             customID:customID];
 }
 
 /**
@@ -521,10 +678,21 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
  * @param size 要查询的数据的条数，(0,25]，传入<=0的值为10，传入大于25的值为25，默认10
  * @param customID 用户自定义ID，可选，SDK原值返回
  */
-- (void)geoFenceAddAroundPOIRegionForMonitoringWithLocationPoint:(CLLocationCoordinate2D)locationPoint aroundRadius:(NSInteger)aroundRadius keyword:(NSString *)keyword POIType:(NSString *)type size:(NSInteger)size customID:(NSString *)customID handler:(MapGeoFenceHandler)handler{
+- (void)geoFenceAddAroundPOIRegionForMonitoringWithLocationPoint:(CLLocationCoordinate2D)locationPoint
+                                                    aroundRadius:(NSInteger)aroundRadius
+                                                         keyword:(NSString *)keyword
+                                                         POIType:(NSString *)type
+                                                            size:(NSInteger)size
+                                                        customID:(NSString *)customID
+                                                         handler:(MapGeoFenceHandler)handler{
     self.geoFenceHandler = handler;
-    [self.geoFenceManager addAroundPOIRegionForMonitoringWithLocationPoint:locationPoint aroundRadius:aroundRadius keyword:keyword POIType:type size:size customID:customID];
     
+    [self.geoFenceManager addAroundPOIRegionForMonitoringWithLocationPoint:locationPoint
+                                                              aroundRadius:aroundRadius
+                                                                   keyword:keyword
+                                                                   POIType:type
+                                                                      size:size
+                                                                  customID:customID];
 }
 
 
@@ -535,8 +703,8 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
  */
 - (void)geoFenceAddDistrictRegionForMonitoringWithDistrictName:(NSString *)districtName customID:(NSString *)customID handler:(MapGeoFenceHandler)handler{
     self.geoFenceHandler = handler;
-    [self.geoFenceManager addDistrictRegionForMonitoringWithDistrictName:districtName customID:customID];
     
+    [self.geoFenceManager addDistrictRegionForMonitoringWithDistrictName:districtName customID:customID];
 }
 
 #pragma mark -AMapSearchDelegate
@@ -634,34 +802,8 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
 
 #pragma mark - -other funtions
 
-+ (NSString *)distanceBetweenStartPoint:(CLLocationCoordinate2D )startPoint endPoint:(CLLocationCoordinate2D )endPoint type:(NSString *)type{
-    MAMapPoint start = MAMapPointForCoordinate(startPoint);
-    MAMapPoint end = MAMapPointForCoordinate(endPoint);
-    
-    CLLocationDistance distance = MAMetersBetweenMapPoints(start, end);
-    NSString * distanceStr = [@(distance) stringValue];
-    
-    switch ([type integerValue]) {//返回米
-            case 0:
-        {
-            return distanceStr;
-        }
-            break;
-            case 1:
-        {
-            distanceStr = [@(distance/1000.0) stringValue];//返回公里/千米
-            return distanceStr;
-        }
-            break;
-        default:
-            break;
-    }
-    return nil;
-}
-
 /* 获取指定title的针 */
 + (MAPointAnnotation *)annoWithTitle:(NSString *)title mapView:(MAMapView *)mapView{
-    
     DDLog(@"_%@_", mapView.annotations);
     if (mapView.annotations) {
         for (id obj in mapView.annotations) {
@@ -680,29 +822,39 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
 /* 展示当前路线方案. */
 
 //在地图上显示当前选择的路径
-- (void)presentCurrentRouteStartPoint:(CLLocationCoordinate2D )startPoint endPoint:(CLLocationCoordinate2D )endPoint response:(AMapRouteSearchResponse *)response mapView:(MAMapView *)mapView{
+- (void)presentRouteStartPoint:(CLLocationCoordinate2D )startPoint
+                      endPoint:(CLLocationCoordinate2D )endPoint
+                      response:(AMapRouteSearchResponse *)response
+                       mapView:(MAMapView *)mapView
+                          type:(MANaviAnnotationType)type{
     
     [self.naviRoute removeFromMapView];  //清空地图上已有的路线
-    
 
     AMapGeoPoint *origin      =  AMapGeoPointFromCoordinate(startPoint); //起点
     AMapGeoPoint *destination =  AMapGeoPointFromCoordinate(endPoint);  //终点
     //根据已经规划的路径，起点，终点，规划类型，是否显示实时路况，生成显示方案
-    self.naviRoute = [MANaviRoute naviRouteForPath:response.route.paths[0] withNaviType:MANaviAnnotationTypeDrive showTraffic:false startPoint:origin endPoint:destination];
+    self.naviRoute = [MANaviRoute naviRouteForPath:response.route.paths[0]
+                                      withNaviType:type
+                                       showTraffic:false
+                                        startPoint:origin
+                                          endPoint:destination];
     self.naviRoute.anntationVisible = false;
-    self.naviRoute.routeColor = UIColor.themeColor;
+    self.naviRoute.routeColor = UIColor.systemBlueColor;
     
     [self.naviRoute addToMapView:mapView];  //显示到地图上
-    
-    //缩放地图使其适应polylines的展示
+//    [self.mapView showOverlays:self.naviRoute.routePolylines edgePadding:UIEdgeInsetsMake(80, 20, 20, 20) animated:true];
+
+//    //缩放地图使其适应polylines的展示
     [mapView setVisibleMapRect:[CommonUtility mapRectForOverlays:self.naviRoute.routePolylines]
-                        edgePadding:UIEdgeInsetsMake(20, 20, 20, 20)
+                        edgePadding:UIEdgeInsetsMake(80, 20, 20, 20)
                            animated:YES];
 }
 
 
 //解析经纬度
-+ (CLLocationCoordinate2D *)coordinatesForString:(NSString *)string coordinateCount:(NSUInteger *)coordinateCount parseToken:(NSString *)token{
++ (CLLocationCoordinate2D *)coordinatesForString:(NSString *)string
+                                 coordinateCount:(NSUInteger *)coordinateCount
+                                      parseToken:(NSString *)token{
     if (string == nil) return NULL;
     if (token == nil) token = @",";
     
@@ -766,20 +918,6 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
     return addressInfo;
 }
 
-- (void)showAlertWithTitle:(nullable NSString *)title msg:(nullable NSString *)msg blockAction:(BlockAlertController _Nullable)blockAction{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
-                                                                             message:msg
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-    
-    [alertController addAction:[UIAlertAction actionWithTitle:@"知道了"
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction *action){
-                                                          
-                                                      }]];
-    UIViewController * rootVC = UIApplication.sharedApplication.keyWindow.rootViewController;
-    [rootVC presentViewController:alertController animated:YES completion:nil];
-    
-}
 
 #pragma mark - -lazy
 -(AMapLocationManager *)locationManager {
@@ -811,42 +949,42 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
     return _searchAPI;
 }
 
--(AMapGeocodeSearchRequest *)geocodeRequest{
-    if (!_geocodeRequest) {
-        _geocodeRequest = [[AMapGeocodeSearchRequest alloc]init];
-    }
-    return _geocodeRequest;
-}
+//-(AMapGeocodeSearchRequest *)geocodeRequest{
+//    if (!_geocodeRequest) {
+//        _geocodeRequest = [[AMapGeocodeSearchRequest alloc]init];
+//    }
+//    return _geocodeRequest;
+//}
 
--(AMapPOIAroundSearchRequest *)poiAroundRequest{
-    if (!_poiAroundRequest) {
-        _poiAroundRequest = [[AMapPOIAroundSearchRequest alloc] init];
-        
-    }
-    return _poiAroundRequest;
-}
+//-(AMapPOIAroundSearchRequest *)poiAroundRequest{
+//    if (!_poiAroundRequest) {
+//        _poiAroundRequest = [[AMapPOIAroundSearchRequest alloc] init];
+//
+//    }
+//    return _poiAroundRequest;
+//}
+//
+//-(AMapPOIKeywordsSearchRequest *)poiKeywordsRequest{
+//    if (!_poiKeywordsRequest) {
+//        _poiKeywordsRequest = [[AMapPOIKeywordsSearchRequest alloc]init];
+//    }
+//    return _poiKeywordsRequest;
+//}
+//
+//-(AMapInputTipsSearchRequest *)inputTipsRequest{
+//    if (!_inputTipsRequest) {
+//        _inputTipsRequest = [[AMapInputTipsSearchRequest alloc]init];
+//    }
+//    return _inputTipsRequest;
+//}
 
--(AMapPOIKeywordsSearchRequest *)poiKeywordsRequest{
-    if (!_poiKeywordsRequest) {
-        _poiKeywordsRequest = [[AMapPOIKeywordsSearchRequest alloc]init];
-    }
-    return _poiKeywordsRequest;
-}
-
--(AMapInputTipsSearchRequest *)inputTipsRequest{
-    if (!_inputTipsRequest) {
-        _inputTipsRequest = [[AMapInputTipsSearchRequest alloc]init];
-    }
-    return _inputTipsRequest;
-}
-
--(AMapDrivingRouteSearchRequest *)drivingRequest{
-    if (!_drivingRequest) {
-        _drivingRequest = [[AMapDrivingRouteSearchRequest alloc]init];
-        
-    }
-    return _drivingRequest;
-}
+//-(AMapDrivingRouteSearchRequest *)drivingRequest{
+//    if (!_drivingRequest) {
+//        _drivingRequest = [[AMapDrivingRouteSearchRequest alloc]init];
+//
+//    }
+//    return _drivingRequest;
+//}
 
 -(AMapGeoFenceManager *)geoFenceManager{
     if (!_geoFenceManager) {
@@ -862,7 +1000,6 @@ NSArray<MAPolyline *> *MapPolylinesForPath(AMapPath *path){
 -(MapLocationInfoModel *)locationModel{
     if (!_locationModel) {
         _locationModel = [[MapLocationInfoModel alloc]init];
-        
     }
     return _locationModel;
 }

@@ -7,15 +7,10 @@
 //
 
 #import "UIPOIAnnotationView.h"
-
 #import <Masonry/Masonry.h>
 
 @implementation UIPOIAnnotationView
 
-- (void)dealloc{
-//    [self removeObserver:self forKeyPath:@"isSelected"];
-    
-}
 
 -(id)initWithAnnotation:(id<MAAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithAnnotation:annotation reuseIdentifier:reuseIdentifier];
@@ -28,24 +23,11 @@
             make.top.left.equalTo(self.label.superview).offset(padding);
             make.right.equalTo(self.label.superview).offset(-padding);
             make.height.equalTo(@(CGRectGetWidth(self.label.superview.bounds) - padding*2));
-
         }];
         
-        [self addObserver:self forKeyPath:@"selected" options:NSKeyValueObservingOptionNew context:nil];
-        
-        [self getViewLayer];
+//        [self getViewLayer];
     }
     return self;
-}
-
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
-    id newValue = change[NSKeyValueChangeNewKey];
-    if ([keyPath isEqualToString:@"selected"]) {
-        BOOL isSelected = ((NSNumber *)newValue).boolValue;
-        self.transform = isSelected ? CGAffineTransformScale(self.transform, 3.0, 3.0) : CGAffineTransformIdentity;
-        [self changeShowType:self.type];
-    }
-    
 }
 
 - (void)setType:(NSNumber *)type{

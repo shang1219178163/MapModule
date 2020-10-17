@@ -7,9 +7,8 @@
 //
 
 #import "NNMapContainView.h"
-#import "UIPOIAnnotationView.h"
-#import "MoveAnnotationView.h"
-
+#import "NNPOIAnnotationView.h"
+#import <Masonry/Masonry.h>
 
 @interface NNMapContainView ()
 
@@ -39,10 +38,28 @@
         [self addSubview:self.mapView];
         [self addSubview:self.locaBtn];
         
+        self.bottomSpacing = 10;
     }
     return self;
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    [self.mapView makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self);
+    }];
+    
+    [self.locaBtn makeConstraints:^(MASConstraintMaker *make) {
+        if (self.isBottomLeft) {
+            make.left.equalTo(self).offset(10);
+        } else {
+            make.right.equalTo(self).offset(-10);
+        }
+        make.bottom.equalTo(self).offset(-self.bottomSpacing);
+        make.size.equalTo(self.locaBtnSize);
+    }];    
+}
 
 + (instancetype)shared{
     static NNMapContainView *_instance;
@@ -57,13 +74,12 @@
 
 - (void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation{
     if(updatingLocation == true && !self.userLocationView){
-        MAAnnotationView *userLocationView = [self.mapView viewForAnnotation:self.mapView.userLocation];
-        userLocationView.annotation.coordinate = self.mapView.userLocation.coordinate;
+        MAAnnotationView *locationView = [mapView viewForAnnotation:mapView.userLocation];
+        locationView.annotation.coordinate = mapView.userLocation.coordinate;
 
-        userLocationView.annotation.title = kAnnoTitleUser;
+        locationView.annotation.title = kAnnoTitleUser;
 //        userLocationView.image = [UIImage imageNamed:self.annViewDict[userLocationView.annotation.title]];
-        self.userLocationView = userLocationView;
-
+        self.userLocationView = locationView;
     }
 //    DDLog(@"didUpdateUserLocation\n___%@->%@", NSStringFromCoordinate(userLocation.coordinate),userLocation.title);
     if (self.didUpdateUserHandler) self.didUpdateUserHandler(mapView, userLocation, updatingLocation, nil);
@@ -82,8 +98,12 @@
     if (error) {
         DDLog(@"error:%@",error)
         if (self.didUpdateUserHandler) self.didUpdateUserHandler(mapView, nil, nil, error);
-        
     }
+}
+
+- (void)mapView:(MAMapView *)mapView regionDidChangeAnimated:(BOOL)animated wasUserAction:(BOOL)wasUserAction{
+//    DDLog(@"DistanceInfo_%@", DistanceInfoFromMapCenterAndMaxEdg(mapView));
+    if (self.regionDidChangeHandler) self.regionDidChangeHandler(mapView, animated, wasUserAction);
 }
 
 - (void)mapViewDidFailLoadingMap:(MAMapView *)mapView withError:(NSError *)error{
@@ -97,38 +117,36 @@
 #pragma mark - MAMapView展示元素
 // 大头针视图
 - (MAAnnotationView *)mapView:(MAMapView *)mapView viewForAnnotation:(id<MAAnnotation>)annotation{
-//    if (self.viewForAnnotationHandler && self.viewForAnnotationHandler(mapView, annotation)) {
-//        return self.viewForAnnotationHandler(mapView, annotation);
-//    }
- 
-    if ([annotation isKindOfClass: NNPOIAnnotation.class]){
-        static NSString *poiIdentifier = @"BNPOIAnnotation";
-        NNPOIAnnotation * anno = (NNPOIAnnotation *)annotation;
-        UIPOIAnnotationView * annoView = [UIPOIAnnotationView mapView:mapView viewForAnnotation:annotation identifier:poiIdentifier];
-  
+    if (self.viewForAnnotationHandler && self.viewForAnnotationHandler(mapView, annotation)) {
+        return self.viewForAnnotationHandler(mapView, annotation);
+    }
+    else if ([annotation isKindOfClass: NNPOIAnnotation.class]){
+        static NSString *poiIdentifier = @"NNPOIAnnotation";
+        NNPOIAnnotation *anno = (NNPOIAnnotation *)annotation;
+        NNPOIAnnotationView *annoView = [NNPOIAnnotationView mapView:mapView viewForAnnotation:annotation identifier:poiIdentifier];
+        
         annoView.label.text = [NSString stringWithFormat:@"¥%@",@(arc4random()%9)];
-        annoView.type = @(anno.index%4);
+        annoView.type = NNPOIAnnotationStyleBlue;
+        
+        if (self.viewForPOIAnnotationHandler) {
+            self.viewForPOIAnnotationHandler(mapView, annoView, anno);
+        }
         return annoView;
     }
     else if ([annotation isKindOfClass: MAUserLocation.class]){
         static NSString *userIdentifier = @"MAUserLocation";
-        MAPinAnnotationView * annoView = [MAPinAnnotationView mapView:mapView viewForAnnotation:annotation identifier:userIdentifier];
-        NSString * annoTitle = kAnnoTitleUser;
+        MAPinAnnotationView *annoView = [MAPinAnnotationView mapView:mapView viewForAnnotation:annotation identifier:userIdentifier];
+        NSString *annoTitle = kAnnoTitleUser;
         annoView.image = [UIImage imageNamed:NNMapManager.shared.annViewDict[annoTitle]];
-//        annoView.image = UIImageNamed(@"map_userLocation_default");
+//        annoView.image = [UIImage imageNamed:@"map_userLocation_default");
 
         return annoView;
     }
     else if ([annotation isKindOfClass: MAPointAnnotation.class]){
         static NSString *pointIdentifier = @"MAPointAnnotation";
-        MAAnnotationView * annoView = nil;
-        if ([annotation.title isEqualToString:kAnnoTitleMove]) {
-            annoView = [MoveAnnotationView mapView:mapView viewForAnnotation:annotation identifier:pointIdentifier];
-            annoView.centerOffset = CGPointZero;
-        }
-        else {
-            annoView = [MAAnnotationView mapView:mapView viewForAnnotation:annotation identifier:pointIdentifier];
-        }
+        MAAnnotationView *annoView = [MAAnnotationView mapView:mapView viewForAnnotation:annotation identifier:pointIdentifier];
+        annoView.canShowCallout = true;
+        
         NSString * annoTitle = [NNMapManager.shared.annViewDict.allKeys containsObject:annotation.title] ? annotation.title : kAnnoTitleDefault;
         annoView.image = [UIImage imageNamed:NNMapManager.shared.annViewDict[annoTitle]];
         return annoView;
@@ -137,8 +155,9 @@
 }
 
 - (void)mapView:(MAMapView *)mapView didSelectAnnotationView:(MAAnnotationView *)view{
-    [UIPOIAnnotationView selectAnnotationView:view];
-//    DDLog(@"%@", view);
+    if ([view isKindOfClass: NNPOIAnnotationView.class]) {
+        ((NNPOIAnnotationView *)view).tapSelected = view.isSelected;
+    }
     
     if (self.selectHandler) {
         self.selectHandler(mapView, view, true);
@@ -146,7 +165,9 @@
 }
 
 - (void)mapView:(MAMapView *)mapView didDeselectAnnotationView:(MAAnnotationView *)view{
-    [UIPOIAnnotationView selectAnnotationView:view];
+    if ([view isKindOfClass: NNPOIAnnotationView.class]) {
+        ((NNPOIAnnotationView *)view).tapSelected = view.isSelected;
+    }
 //    DDLog(@"%@", view);
     if (self.selectHandler) {
         self.selectHandler(mapView, view, false);
@@ -158,7 +179,7 @@
     if (overlay == mapView.userLocationAccuracyCircle){
         MACircleRenderer *renderer = [[MACircleRenderer alloc] initWithCircle:overlay];
         
-        renderer.lineWidth    = 10.f;
+        renderer.lineWidth    = 5.f;
         renderer.strokeColor  = [UIColor lightGrayColor];
         renderer.fillColor    = [UIColor colorWithRed:1 green:0 blue:0 alpha:.3];
         
@@ -166,15 +187,15 @@
         renderer.strokeColor  = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.0];
         renderer.fillColor    = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.0];
         renderer.fillColor    = [UIColor colorWithRed:166.f/255.f green:202.f/255.f blue:237.f/255.f alpha:0.5]; //0x7FA6CAED
-
+        
         return renderer;
     }
     if ([overlay isKindOfClass:[LineDashPolyline class]]){
         MAPolylineRenderer *renderer = [[MAPolylineRenderer alloc] initWithPolyline:((LineDashPolyline *)overlay).polyline];
         renderer.lineWidth   = 4.f;
         renderer.lineDashType = kMALineDashTypeDot;
-        renderer.strokeColor = [UIColor redColor];
-        
+        renderer.strokeColor = UIColor.systemBlueColor;
+
         return renderer;
     }
     if ([overlay isKindOfClass:[MANaviPolyline class]]){
@@ -194,6 +215,8 @@
         else {
             renderer.strokeColor = self.naviRoute.routeColor;
         }
+        renderer.strokeColor = UIColor.systemBlueColor;
+
         return renderer;
     }
     if ([overlay isKindOfClass:[MAMultiPolyline class]]){
@@ -202,7 +225,6 @@
         renderer.lineWidth = 4;
         renderer.strokeColors = [self.naviRoute.multiPolylineColors copy];
         renderer.gradient = YES;
-
         return renderer;
     }
      //画路线
@@ -221,6 +243,9 @@
 }
 
 - (void)mapView:(MAMapView *)mapView didSingleTappedAtCoordinate:(CLLocationCoordinate2D)coordinate{
+    if (self.singleTappedHandler) {
+        self.singleTappedHandler(mapView, coordinate);
+    }
     return;
     //    DDLog(@"distance___%@",[BN_Map distanceWithStart:self.coordinateStart endPoint:self.coordinateEnd type:@"0"]);
 //    [self addAnnoCoordinate:coordinate title:kMapAddressDefault isStart:false];
@@ -239,61 +264,41 @@
     }];
 
     if (mapView.annotations.count > 1) {
-        MAPointAnnotation * annoStart = mapView.annotations.firstObject;
+        MAPointAnnotation *annoStart = mapView.annotations.firstObject;
         annoStart.title = kAnnoTitleStart;
-        MAPointAnnotation * annoEnd = mapView.annotations.lastObject;
+        MAPointAnnotation *annoEnd = mapView.annotations.lastObject;
         
         annoEnd = pointAnno;
         DDLog(@"%@_%@",NSStringFromCoordinate(annoStart.coordinate), NSStringFromCoordinate(annoEnd.coordinate));
 
-        [NNMapManager.shared routeSearchStartPoint:annoStart.coordinate endPoint:annoEnd.coordinate strategy:5 type:@"0" handler:^(AMapRouteSearchBaseRequest *request, AMapRouteSearchResponse *response, NSError *error) {
-            if (error) {
-                DDLog(@"error:%@",error);
-                
-            }
-            else {
-                DDLog(@"response:%@_",@(response.count));
-            }
+        [self routePlanningDriveStartPoint:annoStart.coordinate
+                                  endPoint:annoEnd.coordinate
+                                   handler:^(AMapRouteSearchBaseRequest * _Nonnull request, AMapRouteSearchResponse * _Nonnull response, NSError * _Nullable error) {
+            
         }];
     }
 }
 
 #pragma mark - funtions
-
-//在地图上显示当前选择的路径(需要mapView: rendererForOverlay:配合使用)
-- (void)presentCurrentRouteStartPoint:(CLLocationCoordinate2D )startPoint endPoint:(CLLocationCoordinate2D )endPoint response:(AMapRouteSearchResponse *)response{
-    [self.naviRoute removeFromMapView];  //清空地图上已有的路线
-    
-    AMapGeoPoint *origin      =  AMapGeoPointFromCoordinate(startPoint); //起点
-    AMapGeoPoint *destination =  AMapGeoPointFromCoordinate(endPoint);  //终点
-    //根据已经规划的路径，起点，终点，规划类型，是否显示实时路况，生成显示方案
-    self.naviRoute = [MANaviRoute naviRouteForPath:response.route.paths[0] withNaviType:MANaviAnnotationTypeDrive showTraffic:false startPoint:origin endPoint:destination];
-    self.naviRoute.anntationVisible = false;
-    self.naviRoute.routeColor = UIColor.themeColor;
-    
-    [self.naviRoute addToMapView:self.mapView];  //显示到地图上
-    
-    //缩放地图使其适应polylines的展示
-    [self.mapView setVisibleMapRect:[CommonUtility mapRectForOverlays:self.naviRoute.routePolylines]
-                   edgePadding:UIEdgeInsetsMake(30, 30, 30, 30)
-                      animated:YES];
+- (void)routePlanningDriveStartPoint:(CLLocationCoordinate2D)startPoint
+                            endPoint:(CLLocationCoordinate2D)endPoint
+                             handler:(MapRouteHandler)handler{
+    [NNMapManager.shared routePlanningDriveStartPoint:startPoint
+                                             endPoint:endPoint
+                                             strategy:0
+                                              mapView:self.mapView
+                                              handler:handler];
 }
 
-- (void)presentDriveRouteStart:(CLLocationCoordinate2D )startPoint end:(CLLocationCoordinate2D )endPoint response:(AMapRouteSearchResponse *)response{
-    [self.naviRoute removeFromMapView];  //清空地图上已有的路线
-    
-    AMapGeoPoint *origin      =  AMapGeoPointFromCoordinate(startPoint); //起点
-    AMapGeoPoint *destination =  AMapGeoPointFromCoordinate(endPoint);  //终点
-    //根据已经规划的路径，起点，终点，规划类型，是否显示实时路况，生成显示方案
-    self.naviRoute = [MANaviRoute naviRouteForPath:response.route.paths[0] withNaviType:MANaviAnnotationTypeDrive showTraffic:true startPoint:origin endPoint:destination];
-    self.naviRoute.anntationVisible = false;
-    self.naviRoute.routeColor = UIColor.themeColor;
-    [self.naviRoute addToMapView:self.mapView];  //显示到地图上
-    
-    //缩放地图使其适应polylines的展示
-    [self.mapView setVisibleMapRect:[CommonUtility mapRectForOverlays:self.naviRoute.routePolylines]
-                        edgePadding:UIEdgeInsetsMake(30, 30, 30, 30)
-                           animated:YES];
+- (void)presentRouteStartPoint:(CLLocationCoordinate2D )startPoint
+                      endPoint:(CLLocationCoordinate2D )endPoint
+                      response:(AMapRouteSearchResponse *)response
+                          type:(MANaviAnnotationType)type{
+    [NNMapManager.shared presentRouteStartPoint:startPoint
+                                       endPoint:endPoint
+                                       response:response
+                                        mapView:self.mapView
+                                           type:type];
 }
 
 #pragma mark - layz
