@@ -1,27 +1,27 @@
+////
+////  DriveNaviViewController.h
+////  AMapNaviKit
+////
+////  Created by 刘博 on 16/3/8.
+////  Copyright © 2016年 AutoNavi. All rights reserved.
+////
 //
-//  DriveNaviViewController.h
-//  AMapNaviKit
+//#import <UIKit/UIKit.h>
+//#import <MAMapKit/MAMapKit.h>
 //
-//  Created by 刘博 on 16/3/8.
-//  Copyright © 2016年 AutoNavi. All rights reserved.
+//@protocol DriveNaviViewControllerDelegate <NSObject>
 //
-
-#import <UIKit/UIKit.h>
-#import <AMapNaviKit/AMapNaviKit.h>
-
-@protocol DriveNaviViewControllerDelegate <NSObject>
-
-- (void)driveNaviViewCloseButtonClicked;
-
-@end
-
-
-@interface DriveNaviViewController : UIViewController
-
-@property (nonatomic, weak) id <DriveNaviViewControllerDelegate> delegate;
-
-@property (nonatomic, strong) AMapNaviDriveView *driveView;
-
-@end
-
-
+//- (void)driveNaviViewCloseButtonClicked;
+//
+//@end
+//
+//
+//@interface DriveNaviViewController : UIViewController
+//
+//@property (nonatomic, weak) id <DriveNaviViewControllerDelegate> delegate;
+//
+////@property (nonatomic, strong) AMapNaviDriveView *driveView;
+//
+//@end
+//
+//
