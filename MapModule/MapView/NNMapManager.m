@@ -104,7 +104,7 @@ NSString *DistanceInfoFromMeter(NSInteger distance) {
     if (distance < 1000) {
         result = [NSString stringWithFormat:@" %@%@", @(distance), @"m"];
     } else {
-        result = [NSString stringWithFormat:@" %@%@", @(distance/1000), @"km"];
+        result = [NSString stringWithFormat:@" %.2f%@", distance* 1.0/1000, @"km"];
     }
 //    DDLog(@"距离_%@_", result);
     return result;
